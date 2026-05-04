@@ -18,8 +18,11 @@ namespace InsanityMod.Patches
             var statsContainer = __instance.statsUI?.transform;
             if (statsContainer == null) return;
 
+            var existing = statsContainer.Find("InsanityStats");
+            if (existing != null) Object.Destroy(existing.gameObject);
+
             string header = LocalizationManager.Get("hud.max_insanity");
-            var lineGO = new GameObject("InsanityStats");
+            var lineGO = new GameObject("InsanityStats", typeof(RectTransform));
             lineGO.transform.SetParent(statsContainer, false);
 
             var text = lineGO.AddComponent<TextMeshProUGUI>();
