@@ -14,6 +14,7 @@ namespace InsanityMod.Items
             if (!IsOwner) return;
 
             PlayerControllerB player = GameNetworkManager.Instance.localPlayerController;
+            if (player == null) return;
 
             VFXManager.ClearEffect();
 
@@ -33,7 +34,7 @@ namespace InsanityMod.Items
         }
 
         [ServerRpc(RequireOwnership = false)]
-        public void ConsumeServerRpc()
+        private void ConsumeServerRpc()
         {
             NetworkObject.Despawn(true);
         }

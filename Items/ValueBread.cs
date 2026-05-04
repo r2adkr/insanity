@@ -20,6 +20,7 @@ namespace InsanityMod.Items
             if (!IsOwner) return;
 
             PlayerControllerB player = GameNetworkManager.Instance.localPlayerController;
+            if (player == null) return;
 
             InsanityManager.AddInsanity(-ModConfig.BreadInsanityReduction.Value);
 
@@ -74,7 +75,7 @@ namespace InsanityMod.Items
         }
 
         [ServerRpc(RequireOwnership = false)]
-        public void ConsumeOneServingServerRpc()
+        private void ConsumeOneServingServerRpc()
         {
             StackCount.Value--;
             if (StackCount.Value <= 0)
