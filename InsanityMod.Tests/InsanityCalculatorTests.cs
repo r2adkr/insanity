@@ -57,13 +57,6 @@ namespace InsanityMod.Tests
         }
 
         [Fact]
-        public void ChokeChance_accumulates_correctly()
-        {
-            float chance = InsanityCalculator.ChokeChance(0.2f, 0.05f, 3);
-            Assert.Equal(0.35f, chance, precision: 4);
-        }
-
-        [Fact]
         public void TunnelVisionAlpha_zero_below_threshold()
         {
             float alpha = InsanityCalculator.TunnelVisionAlpha(75f, 80f);

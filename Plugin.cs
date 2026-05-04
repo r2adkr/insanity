@@ -2,13 +2,11 @@ using BepInEx;
 using BepInEx.Logging;
 using HarmonyLib;
 using InsanityMod.Managers;
-using InsanityMod.Network;
 
 namespace InsanityMod
 {
     [BepInPlugin(Plugin.GUID, Plugin.NAME, Plugin.VERSION)]
     [BepInDependency("mrov.WeatherRegistry", BepInDependency.DependencyFlags.HardDependency)]
-    [BepInDependency("EliteMasterEric.Coroner", BepInDependency.DependencyFlags.SoftDependency)]
     public class Plugin : BaseUnityPlugin
     {
         public const string GUID    = "com.insanitymod.lethalcompany";
@@ -30,7 +28,6 @@ namespace InsanityMod
             AssetBundleLoader.Load();
             BloodNightManager.Initialize();
             VFXManager.Initialize();
-            CoronerCompat.Initialize();
 
             _harmony.PatchAll();
             Log.LogInfo($"{NAME} v{VERSION} loaded.");

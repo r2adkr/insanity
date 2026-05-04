@@ -6,12 +6,8 @@ namespace InsanityMod
 {
     internal static class AssetBundleLoader
     {
-        public static Material?    TunnelVisionMaterial  { get; private set; }
-        public static AudioClip[]  InsanityAudioClips    { get; private set; } = System.Array.Empty<AudioClip>();
-        public static GameObject?  ValueBreadPrefab      { get; private set; }
-        public static GameObject?  LucidDoomPrefab       { get; private set; }
-        public static Item?        ValueBreadItem        { get; private set; }
-        public static Item?        LucidDoomItem         { get; private set; }
+        public static Material?   TunnelVisionMaterial { get; private set; }
+        public static AudioClip[] InsanityAudioClips   { get; private set; } = System.Array.Empty<AudioClip>();
 
         public static void Load()
         {
@@ -20,7 +16,7 @@ namespace InsanityMod
 
             if (!File.Exists(bundlePath))
             {
-                Plugin.Log.LogWarning("insanitymod.bundle not found — items and VFX will be missing. Build the Unity AssetBundle first (Task 13).");
+                Plugin.Log.LogWarning("insanitymod.bundle not found — VFX and audio cues will be missing.");
                 return;
             }
 
@@ -31,17 +27,13 @@ namespace InsanityMod
                 return;
             }
 
-            TunnelVisionMaterial  = bundle.LoadAsset<Material>("TunnelVisionMat");
-            InsanityAudioClips    = new[]
+            TunnelVisionMaterial = bundle.LoadAsset<Material>("TunnelVisionMat");
+            InsanityAudioClips   = new[]
             {
                 bundle.LoadAsset<AudioClip>("insanity_breath_lo"),
                 bundle.LoadAsset<AudioClip>("insanity_mutter"),
                 bundle.LoadAsset<AudioClip>("insanity_breath_hi"),
             };
-            ValueBreadPrefab = bundle.LoadAsset<GameObject>("ValueBreadPrefab");
-            LucidDoomPrefab  = bundle.LoadAsset<GameObject>("LucidDoomPrefab");
-            ValueBreadItem   = bundle.LoadAsset<Item>("ValueBreadItem");
-            LucidDoomItem    = bundle.LoadAsset<Item>("LucidDoomItem");
 
             Plugin.Log.LogInfo("AssetBundle loaded successfully.");
         }

@@ -1,17 +1,9 @@
 {
   "KO": {
-    "item.bread.name":    "50원짜리 빵",
-    "item.bread.choke":   "빵에 걸렸다!",
-    "item.potion.name":   "루시드 둠",
-    "item.potion.use":    "시야가 맑아졌지만...",
     "hud.max_insanity":   "최대 광기",
     "weather.blood_night":"피의 밤"
   },
   "EN": {
-    "item.bread.name":    "Cheap Bread",
-    "item.bread.choke":   "Choking on Bread!",
-    "item.potion.name":   "Lucid Doom",
-    "item.potion.use":    "Vision cleared, but...",
     "hud.max_insanity":   "Peak Insanity",
     "weather.blood_night":"Blood Night"
   }

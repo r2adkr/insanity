@@ -70,10 +70,6 @@
       <HintPath>$(BepInExPlugins)mrov-MrovLib\MrovLib.dll</HintPath>
       <Private>false</Private>
     </Reference>
-    <Reference Include="Coroner">
-      <HintPath>$(BepInExPlugins)EliteMasterEric-Coroner\Coroner.dll</HintPath>
-      <Private>false</Private>
-    </Reference>
   </ItemGroup>
 
   <!-- 빌드 후 deploy 디렉토리에 자동 복사 -->

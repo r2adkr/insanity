@@ -22,9 +22,6 @@ namespace InsanityMod
 
         public static float Clamp(float value) => Math.Clamp(value, 0f, 100f);
 
-        public static float ChokeChance(float baseChance, float stackIncrement, int consecutiveUses) =>
-            baseChance + stackIncrement * consecutiveUses;
-
         public static float TunnelVisionAlpha(float insanity, float threshold) =>
             insanity >= threshold
                 ? (insanity - threshold) / (100f - threshold)

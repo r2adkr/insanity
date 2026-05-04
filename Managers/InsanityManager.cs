@@ -8,7 +8,6 @@ namespace InsanityMod.Managers
     {
         private static float _insanity;
         private static float _maxInsanityThisRound;
-        private static int   _consecutiveBreadUses;
         private static float _audioTimer;
 
         public static float Insanity            => _insanity;
@@ -16,10 +15,9 @@ namespace InsanityMod.Managers
 
         public static void ResetForRound()
         {
-            _insanity              = 0f;
-            _maxInsanityThisRound  = 0f;
-            _consecutiveBreadUses  = 0;
-            _audioTimer            = 0f;
+            _insanity             = 0f;
+            _maxInsanityThisRound = 0f;
+            _audioTimer           = 0f;
         }
 
         public static void Tick(PlayerControllerB player, float deltaTime)
@@ -47,10 +45,6 @@ namespace InsanityMod.Managers
             if (_insanity > _maxInsanityThisRound)
                 _maxInsanityThisRound = _insanity;
         }
-
-        public static int  GetConsecutiveBreadUses()  => _consecutiveBreadUses;
-        public static void IncrementBreadUses()        => _consecutiveBreadUses++;
-        public static void ResetBreadUses()            => _consecutiveBreadUses = 0;
 
         private static void TryTriggerInsanityAudio(float deltaTime)
         {

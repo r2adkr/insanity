@@ -17,12 +17,5 @@ namespace InsanityMod.Patches
             if (__instance.isPlayerDead) return;
             InsanityManager.Tick(__instance, Time.deltaTime);
         }
-
-        [HarmonyPatch("KillPlayer")]
-        [HarmonyPrefix]
-        private static void KillPlayerPrefix(PlayerControllerB __instance)
-        {
-            CoronerCompat.ApplyLucidDoomCause(__instance);
-        }
     }
 }
