@@ -22,7 +22,7 @@ namespace InsanityMod.Patches
                 AssetBundleLoader.ValueBreadItem,
                 AssetBundleLoader.LucidDoomItem
             };
-            __instance.allItemsList.itemsList = list.ToArray();
+            __instance.allItemsList.itemsList = list;
             _itemsRegistered = true;
         }
     }

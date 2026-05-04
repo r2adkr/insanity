@@ -17,7 +17,7 @@ namespace InsanityMod.Managers
                 effect
             );
 
-            _bloodNightWeather.DefaultWeight = ModConfig.BloodNightSpawnWeight.Value;
+            _bloodNightWeather.Config.DefaultWeight = new IntegerConfigHandler(ModConfig.BloodNightSpawnWeight.Value, true);
 
             WeatherManager.RegisterWeather(_bloodNightWeather);
 

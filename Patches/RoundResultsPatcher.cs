@@ -15,7 +15,7 @@ namespace InsanityMod.Patches
         {
             if (InsanityNetworkHandler.PlayerMaxInsanity.Count == 0) return;
 
-            var statsContainer = __instance.statsUI?.transform;
+            var statsContainer = __instance.statsUIElements?.penaltyTotal?.transform.parent;
             if (statsContainer == null) return;
 
             var existing = statsContainer.Find("InsanityStats");
