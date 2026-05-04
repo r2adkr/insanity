@@ -25,7 +25,6 @@ namespace InsanityMod
 
             ModConfig.Initialize(Config);
             LocalizationManager.Initialize();
-            AssetBundleLoader.Load();
             BloodNightManager.Initialize();
             VFXManager.Initialize();
 

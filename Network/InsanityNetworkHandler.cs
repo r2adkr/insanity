@@ -1,15 +1,13 @@
 using System.Collections.Generic;
 using Unity.Collections;
 using Unity.Netcode;
-using UnityEngine;
 
 namespace InsanityMod.Network
 {
     internal static class InsanityNetworkHandler
     {
-        private const string MSG_SUBMIT   = "InsanityMod.SubmitMaxInsanity";
-        private const string MSG_RESULTS  = "InsanityMod.BroadcastResults";
-        private const string MSG_AUDIO    = "InsanityMod.PlayAudio";
+        private const string MSG_SUBMIT  = "InsanityMod.SubmitMaxInsanity";
+        private const string MSG_RESULTS = "InsanityMod.BroadcastResults";
 
         public static readonly Dictionary<ulong, float> PlayerMaxInsanity = new();
 
@@ -22,7 +20,6 @@ namespace InsanityMod.Network
                 mgr.RegisterNamedMessageHandler(MSG_SUBMIT, ReceiveMaxInsanity);
 
             mgr.RegisterNamedMessageHandler(MSG_RESULTS, ReceiveBroadcastResults);
-            mgr.RegisterNamedMessageHandler(MSG_AUDIO,   ReceivePlayAudio);
         }
 
         public static void UnregisterHandlers()
@@ -31,7 +28,6 @@ namespace InsanityMod.Network
             var mgr = NetworkManager.Singleton.CustomMessagingManager;
             mgr.UnregisterNamedMessageHandler(MSG_SUBMIT);
             mgr.UnregisterNamedMessageHandler(MSG_RESULTS);
-            mgr.UnregisterNamedMessageHandler(MSG_AUDIO);
         }
 
         public static void SendMaxInsanity(float maxInsanity)
@@ -54,9 +50,9 @@ namespace InsanityMod.Network
         {
             if (NetworkManager.Singleton == null || !NetworkManager.Singleton.IsServer) return;
 
-            int    count  = PlayerMaxInsanity.Count;
-            int    size   = sizeof(int) + count * (sizeof(ulong) + sizeof(float));
-            var    writer = new FastBufferWriter(size, Allocator.Temp);
+            int count  = PlayerMaxInsanity.Count;
+            int size   = sizeof(int) + count * (sizeof(ulong) + sizeof(float));
+            var writer = new FastBufferWriter(size, Allocator.Temp);
 
             writer.WriteValueSafe(count);
             foreach (var kv in PlayerMaxInsanity)
@@ -78,34 +74,6 @@ namespace InsanityMod.Network
                 reader.ReadValueSafe(out ulong id);
                 reader.ReadValueSafe(out float val);
                 PlayerMaxInsanity[id] = val;
-            }
-        }
-
-        public static void SendPlayInsanityAudio(int clipIndex)
-        {
-            if (NetworkManager.Singleton == null) return;
-            ulong localId = NetworkManager.Singleton.LocalClientId;
-            var   writer  = new FastBufferWriter(sizeof(ulong) + sizeof(int), Allocator.Temp);
-            writer.WriteValueSafe(localId);
-            writer.WriteValueSafe(clipIndex);
-            NetworkManager.Singleton.CustomMessagingManager
-                .SendNamedMessageToAll(MSG_AUDIO, writer);
-            writer.Dispose();
-        }
-
-        private static void ReceivePlayAudio(ulong _, FastBufferReader reader)
-        {
-            reader.ReadValueSafe(out ulong playerId);
-            reader.ReadValueSafe(out int   clipIndex);
-
-            var clips = AssetBundleLoader.InsanityAudioClips;
-            if (clipIndex < 0 || clipIndex >= clips.Length || clips[clipIndex] == null) return;
-
-            foreach (var player in StartOfRound.Instance.allPlayerScripts)
-            {
-                if (player.actualClientId != playerId || player.isPlayerDead) continue;
-                player.movementAudio.PlayOneShot(clips[clipIndex]);
-                break;
             }
         }
     }

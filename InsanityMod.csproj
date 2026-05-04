@@ -77,6 +77,5 @@
     <MakeDir Directories="$(DeployDir)" />
     <Copy SourceFiles="$(OutputPath)$(AssemblyName).dll" DestinationFolder="$(DeployDir)" />
     <Copy SourceFiles="$(ProjectDir)Resources\Langs.json" DestinationFolder="$(DeployDir)" Condition="Exists('$(ProjectDir)Resources\Langs.json')" />
-    <Copy SourceFiles="$(ProjectDir)Assets\insanitymod.bundle" DestinationFolder="$(DeployDir)" Condition="Exists('$(ProjectDir)Assets\insanitymod.bundle')" />
   </Target>
 </Project>

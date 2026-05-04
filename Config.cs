@@ -10,14 +10,12 @@ namespace InsanityMod
         public static ConfigEntry<float> BloodNightMultiplier    { get; private set; } = null!;
         public static ConfigEntry<int>   BloodNightSpawnWeight   { get; private set; } = null!;
         public static ConfigEntry<float> TunnelVisionThreshold   { get; private set; } = null!;
-        public static ConfigEntry<float> InsanityAudioThreshold  { get; private set; } = null!;
 
         public static void Initialize(ConfigFile cfg)
         {
             const string S_INS = "Insanity";
             const string S_BN  = "BloodNight";
             const string S_VFX = "VFX";
-            const string S_AUD = "Audio";
 
             InsanityRateInFacility = cfg.Bind(S_INS, "InsanityRateInFacility", 0.5f, "시설 내 광기 상승/초");
             InsanityRateOnShip     = cfg.Bind(S_INS, "InsanityRateOnShip",     0.1f, "함선 내 광기 상승/초");
@@ -25,7 +23,6 @@ namespace InsanityMod
             BloodNightMultiplier   = cfg.Bind(S_BN,  "BloodNightMultiplier",   1.2f, "피의 밤 광기 배율");
             BloodNightSpawnWeight  = cfg.Bind(S_BN,  "BloodNightSpawnWeight",  1,    "피의 밤 날씨 발생 가중치");
             TunnelVisionThreshold  = cfg.Bind(S_VFX, "TunnelVisionThreshold",  80f,  "터널 비전 발동 광기%");
-            InsanityAudioThreshold = cfg.Bind(S_AUD, "InsanityAudioThreshold", 50f,  "광기 오디오 발동 광기%");
         }
     }
 }
