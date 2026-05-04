@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project>
+  <PropertyGroup>
+    <LCManaged>C:\Program Files (x86)\Steam\steamapps\common\Lethal Company\Lethal Company_Data\Managed\</LCManaged>
+    <BepInExCore>C:\Users\yeokyoomin\AppData\Roaming\Thunderstore Mod Manager\DataFolder\LethalCompany\profiles\mods\BepInEx\core\</BepInExCore>
+    <BepInExPlugins>C:\Users\yeokyoomin\AppData\Roaming\Thunderstore Mod Manager\DataFolder\LethalCompany\profiles\mods\BepInEx\plugins\</BepInExPlugins>
+    <DeployDir>$(BepInExPlugins)InsanityMod\</DeployDir>
+  </PropertyGroup>
+</Project>
