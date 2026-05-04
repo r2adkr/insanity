@@ -32,5 +32,13 @@ namespace InsanityMod
             _harmony.PatchAll();
             Log.LogInfo($"{NAME} v{VERSION} loaded.");
         }
+
+        private void LateUpdate()
+        {
+            if (!InsanityManager.IsRoundActive) return;
+            var local = GameNetworkManager.Instance?.localPlayerController;
+            if (local == null || local.isPlayerDead) return;
+            CameraShakeManager.ApplyShake(local, InsanityManager.Insanity);
+        }
     }
 }
