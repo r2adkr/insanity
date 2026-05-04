@@ -27,6 +27,7 @@ namespace InsanityMod
             LocalizationManager.Initialize();
             BloodNightManager.Initialize();
             VFXManager.Initialize();
+            InsanityHud.Initialize();
 
             _harmony.PatchAll();
             Log.LogInfo($"{NAME} v{VERSION} loaded.");

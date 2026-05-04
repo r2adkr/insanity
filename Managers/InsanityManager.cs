@@ -33,6 +33,7 @@ namespace InsanityMod.Managers
                 _maxInsanityThisRound = _insanity;
 
             VFXManager.UpdateTunnelVision(_insanity);
+            InsanityHud.UpdateValue(_insanity);
             VoiceHaunt.Tick(_insanity, deltaTime);
         }
 
