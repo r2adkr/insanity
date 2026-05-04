@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace InsanityMod.Items
 {
-    internal class ValueBread : GrabbableObject
+    public class ValueBread : GrabbableObject
     {
         public NetworkVariable<int> StackCount = new NetworkVariable<int>(
             value: 1,
@@ -37,7 +37,8 @@ namespace InsanityMod.Items
                 CoronerCompat.SetChokeCause(player);
                 HUDManager.Instance.DisplayTip(
                     LocalizationManager.Get("item.bread.name"),
-                    LocalizationManager.Get("item.bread.choke"));
+                    LocalizationManager.Get("item.bread.choke"),
+                    isWarning: true);
             }
             else
             {
