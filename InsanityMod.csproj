@@ -13,10 +13,6 @@
       <HintPath>$(LCManaged)Assembly-CSharp.dll</HintPath>
       <Private>false</Private>
     </Reference>
-    <Reference Include="UnityEngine">
-      <HintPath>$(LCManaged)UnityEngine.dll</HintPath>
-      <Private>false</Private>
-    </Reference>
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>$(LCManaged)UnityEngine.CoreModule.dll</HintPath>
       <Private>false</Private>
