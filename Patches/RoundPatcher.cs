@@ -12,7 +12,7 @@ namespace InsanityMod.Patches
         [HarmonyPostfix]
         private static void StartGamePostfix()
         {
-            InsanityManager.ResetForRound();
+            InsanityManager.StartRound();
             InsanityNetworkHandler.PlayerMaxInsanity.Clear();
             InsanityNetworkHandler.RegisterHandlers();
             VoiceHaunt.ResetForRound();
@@ -31,6 +31,7 @@ namespace InsanityMod.Patches
         {
             InsanityNetworkHandler.BroadcastResults();
             InsanityNetworkHandler.UnregisterHandlers();
+            InsanityManager.EndRound();
         }
     }
 }

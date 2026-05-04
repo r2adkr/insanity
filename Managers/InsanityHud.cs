@@ -27,6 +27,13 @@ namespace InsanityMod.Managers
         {
             if (scene.name != "SampleSceneRelay") return;
             CreateOverlay();
+            SetVisible(false);
+        }
+
+        public static void SetVisible(bool visible)
+        {
+            if (_canvasGO == null) return;
+            _canvasGO.SetActive(visible);
         }
 
         public static void UpdateValue(float insanity)
