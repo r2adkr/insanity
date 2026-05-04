@@ -33,8 +33,11 @@ namespace InsanityMod
             Coroner.API.SetCauseOfDeath(player, _chokeCause);
         }
 
-        public static void MarkLucidDoomUser(PlayerControllerB player) =>
+        public static void MarkLucidDoomUser(PlayerControllerB player)
+        {
+            if (player == null) return;
             _pendingLucidDoom[player.GetInstanceID()] = true;
+        }
 
         public static void ApplyLucidDoomCause(PlayerControllerB player)
         {

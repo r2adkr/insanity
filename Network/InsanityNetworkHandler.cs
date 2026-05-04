@@ -52,7 +52,7 @@ namespace InsanityMod.Network
 
         public static void BroadcastResults()
         {
-            if (!NetworkManager.Singleton.IsServer) return;
+            if (NetworkManager.Singleton == null || !NetworkManager.Singleton.IsServer) return;
 
             int    count  = PlayerMaxInsanity.Count;
             int    size   = sizeof(int) + count * (sizeof(ulong) + sizeof(float));
@@ -99,7 +99,7 @@ namespace InsanityMod.Network
             reader.ReadValueSafe(out int   clipIndex);
 
             var clips = AssetBundleLoader.InsanityAudioClips;
-            if (clipIndex >= clips.Length || clips[clipIndex] == null) return;
+            if (clipIndex < 0 || clipIndex >= clips.Length || clips[clipIndex] == null) return;
 
             foreach (var player in StartOfRound.Instance.allPlayerScripts)
             {
