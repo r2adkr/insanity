@@ -8,6 +8,11 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <!-- Exclude the standalone test project from the main build -->
+  <ItemGroup>
+    <Compile Remove="InsanityMod.Tests\**" />
+  </ItemGroup>
+
   <ItemGroup>
     <Reference Include="Assembly-CSharp">
       <HintPath>$(LCManaged)Assembly-CSharp.dll</HintPath>
