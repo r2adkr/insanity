@@ -17,12 +17,12 @@ namespace InsanityMod
             const string S_BN  = "BloodNight";
             const string S_VFX = "VFX";
 
-            InsanityRateInFacility = cfg.Bind(S_INS, "InsanityRateInFacility", 0.5f, "시설 내 광기 상승/초");
-            InsanityRateOnShip     = cfg.Bind(S_INS, "InsanityRateOnShip",     0.1f, "함선 내 광기 상승/초");
-            InsanityDecayOutdoor   = cfg.Bind(S_INS, "InsanityDecayOutdoor",   0.8f, "야외 광기 감소/초");
-            BloodNightMultiplier   = cfg.Bind(S_BN,  "BloodNightMultiplier",   1.2f, "피의 밤 광기 배율");
-            BloodNightSpawnWeight  = cfg.Bind(S_BN,  "BloodNightSpawnWeight",  1,    "피의 밤 날씨 발생 가중치");
-            TunnelVisionThreshold  = cfg.Bind(S_VFX, "TunnelVisionThreshold",  80f,  "터널 비전 발동 광기%");
+            InsanityRateInFacility = cfg.Bind(S_INS, "InsanityRateInFacility", 0.5f, "Insanity gained per second inside the facility.");
+            InsanityRateOnShip     = cfg.Bind(S_INS, "InsanityRateOnShip",     0.1f, "Insanity gained per second on the ship (anti-camping).");
+            InsanityDecayOutdoor   = cfg.Bind(S_INS, "InsanityDecayOutdoor",   0.8f, "Insanity lost per second outdoors.");
+            BloodNightMultiplier   = cfg.Bind(S_BN,  "BloodNightMultiplier",   1.2f, "Insanity rate multiplier when Blood Night weather is active.");
+            BloodNightSpawnWeight  = cfg.Bind(S_BN,  "BloodNightSpawnWeight",  20,   "Spawn weight for Blood Night weather (other weathers are 100, so ~3% per night at 20).");
+            TunnelVisionThreshold  = cfg.Bind(S_VFX, "TunnelVisionThreshold",  80f,  "Insanity % at which the red tunnel-vision overlay starts.");
         }
     }
 }

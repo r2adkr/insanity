@@ -1,3 +1,4 @@
+using UnityEngine;
 using WeatherRegistry;
 
 namespace InsanityMod.Managers
@@ -10,7 +11,7 @@ namespace InsanityMod.Managers
 
         public static void Initialize()
         {
-            var effect = new ImprovedWeatherEffect(null, null);
+            var effect = ScriptableObject.CreateInstance<ImprovedWeatherEffect>();
 
             _bloodNightWeather = new Weather(
                 LocalizationManager.Get("weather.blood_night"),
