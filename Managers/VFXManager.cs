@@ -85,10 +85,10 @@ namespace InsanityMod.Managers
             float threshold = ModConfig.TunnelVisionThreshold.Value;
             float target    = InsanityCalculator.TunnelVisionAlpha(insanity, threshold);
             float current   = _overlay.color.a;
-            float newAlpha  = Mathf.Lerp(current, target, Time.deltaTime * 3f);
+            float newAlpha  = Mathf.Lerp(current, target, Time.deltaTime * 2f);
 
-            float pulse = 0.8f + 0.2f * Mathf.Sin(Time.time * insanity * 0.1f);
-            _overlay.color = new Color(pulse, 0f, 0f, newAlpha);
+            float pulse = 0.94f + 0.06f * Mathf.Sin(Time.time * 1.2f);
+            _overlay.color = new Color(0.45f * pulse, 0.02f, 0.02f, newAlpha);
         }
 
         public static void ClearEffect()

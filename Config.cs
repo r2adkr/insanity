@@ -19,6 +19,8 @@ namespace InsanityMod
         public static ConfigEntry<float> DeathWitnessSpike       { get; private set; } = null!;
         public static ConfigEntry<float> DeathWitnessRange       { get; private set; } = null!;
         public static ConfigEntry<float> GhostGirlBoostThreshold { get; private set; } = null!;
+        public static ConfigEntry<float> VoiceHauntThreshold     { get; private set; } = null!;
+        public static ConfigEntry<float> LightProximityRange     { get; private set; } = null!;
 
         public static void Initialize(ConfigFile cfg)
         {
@@ -42,6 +44,8 @@ namespace InsanityMod
             DeathWitnessSpike       = cfg.Bind(S_REA, "DeathWitnessSpike",       25f,   "Instant insanity gain when a teammate dies in your line of sight.");
             DeathWitnessRange       = cfg.Bind(S_REA, "DeathWitnessRange",       40f,   "Max distance (m) for the death witness check.");
             GhostGirlBoostThreshold = cfg.Bind(S_REA, "GhostGirlBoostThreshold", 80f,   "Insanity % above which the host slightly raises Ghost Girl haunt chance (set high to disable).");
+            VoiceHauntThreshold     = cfg.Bind(S_REA, "VoiceHauntThreshold",     70f,   "Insanity % at which voice distortion + recorded teammate voice playback start.");
+            LightProximityRange     = cfg.Bind(S_REA, "LightProximityRange",     8f,    "Max distance (m) to a facility light for the light proximity buff.");
         }
     }
 }

@@ -8,7 +8,6 @@ namespace InsanityMod.Voice
 {
     internal static class VoiceHaunt
     {
-        private const float HauntThreshold      = 50f;
         private const int   SampleRate          = 48000;
         private const int   BufferSeconds       = 30;
         private const int   SnippetMinMs        = 600;
@@ -28,10 +27,11 @@ namespace InsanityMod.Voice
 
             RefreshTracks();
 
-            float t = Mathf.Clamp01((localInsanity - HauntThreshold) / (100f - HauntThreshold));
+            float threshold = InsanityMod.ModConfig.VoiceHauntThreshold.Value;
+            float t = Mathf.Clamp01((localInsanity - threshold) / Mathf.Max(0.01f, 100f - threshold));
             foreach (var track in _tracks.Values) track.ApplyLiveDistortion(t);
 
-            if (localInsanity < HauntThreshold)
+            if (localInsanity < threshold)
             {
                 _hauntCooldown = NextInterval(localInsanity);
                 return;
@@ -102,9 +102,8 @@ namespace InsanityMod.Voice
 
         private static float NextInterval(float insanity)
         {
-            if (insanity >= 90f) return UnityEngine.Random.Range(2f, 6f);
-            if (insanity >= 70f) return UnityEngine.Random.Range(8f, 18f);
-            return UnityEngine.Random.Range(20f, 40f);
+            if (insanity >= 90f) return UnityEngine.Random.Range(3f, 8f);
+            return UnityEngine.Random.Range(12f, 25f);
         }
 
         private static void TryHauntPlayback(float intensity)

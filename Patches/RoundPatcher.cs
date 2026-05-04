@@ -16,6 +16,7 @@ namespace InsanityMod.Patches
             InsanityNetworkHandler.PlayerMaxInsanity.Clear();
             InsanityNetworkHandler.RegisterHandlers();
             VoiceHaunt.ResetForRound();
+            InsanityModifiers.InvalidateLightCache();
         }
 
         [HarmonyPatch("ShipLeave")]

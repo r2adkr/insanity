@@ -1,11 +1,16 @@
 using System.Collections.Generic;
 using GameNetcodeStuff;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace InsanityMod.Managers
 {
     internal static class InsanityModifiers
     {
+        private static Light[] _cachedLights = System.Array.Empty<Light>();
+        private static float   _lastLightCacheTime = -100f;
+        private const  float   LightCacheRefreshSec = 5f;
+
         private static readonly Dictionary<string, float> EnemyRates = new()
         {
             { "Flowerman",        2.0f },
@@ -119,7 +124,38 @@ namespace InsanityMod.Managers
                     if (item is FlashlightItem fl && fl.isBeingUsed) return ModConfig.LightBuffRate.Value;
                 }
             }
+
+            if (IsNearActiveLight(local.transform.position)) return ModConfig.LightBuffRate.Value;
             return 0f;
+        }
+
+        private static bool IsNearActiveLight(Vector3 pos)
+        {
+            if (Time.time - _lastLightCacheTime > LightCacheRefreshSec)
+            {
+                _cachedLights = Object.FindObjectsOfType<Light>();
+                _lastLightCacheTime = Time.time;
+            }
+
+            float range   = ModConfig.LightProximityRange.Value;
+            float rangeSq = range * range;
+
+            for (int i = 0; i < _cachedLights.Length; i++)
+            {
+                var light = _cachedLights[i];
+                if (light == null) continue;
+                if (!light.enabled || !light.gameObject.activeInHierarchy) continue;
+                if (light.type == LightType.Directional) continue;
+                if (light.intensity < 0.3f) continue;
+                if ((light.transform.position - pos).sqrMagnitude <= rangeSq) return true;
+            }
+            return false;
+        }
+
+        public static void InvalidateLightCache()
+        {
+            _cachedLights = System.Array.Empty<Light>();
+            _lastLightCacheTime = -100f;
         }
 
         public static bool IsPositionVisible(PlayerControllerB local, Vector3 worldPos, float maxRange)
