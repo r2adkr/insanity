@@ -1,6 +1,7 @@
 using HarmonyLib;
 using InsanityMod.Managers;
 using InsanityMod.Network;
+using InsanityMod.Voice;
 
 namespace InsanityMod.Patches
 {
@@ -14,6 +15,7 @@ namespace InsanityMod.Patches
             InsanityManager.ResetForRound();
             InsanityNetworkHandler.PlayerMaxInsanity.Clear();
             InsanityNetworkHandler.RegisterHandlers();
+            VoiceHaunt.ResetForRound();
         }
 
         [HarmonyPatch("ShipLeave")]

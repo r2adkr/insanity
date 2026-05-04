@@ -1,4 +1,5 @@
 using GameNetcodeStuff;
+using InsanityMod.Voice;
 
 namespace InsanityMod.Managers
 {
@@ -32,6 +33,7 @@ namespace InsanityMod.Managers
                 _maxInsanityThisRound = _insanity;
 
             VFXManager.UpdateTunnelVision(_insanity);
+            VoiceHaunt.Tick(_insanity, deltaTime);
         }
 
         public static void AddInsanity(float amount)
