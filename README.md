@@ -50,7 +50,7 @@ Being with a teammate near a light source in the facility effectively keeps insa
 Things start happening as insanity climbs. Find out for yourself.
 
 <details>
-<summary>스포일러 (클릭해서 보기)</summary>
+<summary>Spoilers — click to reveal</summary>
 
 ### 70% — Voice distortion
 Nearby teammates' voices begin to sound subtly warped. The mod also captures a rolling 30-second buffer of teammate voice chat and starts playing back distorted snippets spatially in 3D — you'll hear phantom voices from positions that seem to move.
