@@ -8,22 +8,33 @@ namespace InsanityMod.Managers
         private static float _insanity;
         private static float _maxInsanityThisRound;
         private static bool  _roundActive;
+        private static bool  _apparatusRemoved;
+        private static bool  _hasTransformedThisRound;
 
         public static float Insanity             => _insanity;
         public static float MaxInsanityThisRound => _maxInsanityThisRound;
         public static bool  IsRoundActive        => _roundActive;
 
+        public static void OnApparatusRemoved()
+        {
+            if (_roundActive) _apparatusRemoved = true;
+        }
+
         public static void StartRound()
         {
-            _insanity             = 0f;
-            _maxInsanityThisRound = 0f;
-            _roundActive          = true;
+            _insanity                = 0f;
+            _maxInsanityThisRound    = 0f;
+            _roundActive             = true;
+            _apparatusRemoved        = false;
+            _hasTransformedThisRound = false;
+            MaskedTransformManager.Reset();
             InsanityHud.SetVisible(true);
         }
 
         public static void EndRound()
         {
             _roundActive = false;
+            VFXManager.ClearEffect();
             InsanityHud.SetVisible(false);
         }
 
@@ -33,10 +44,13 @@ namespace InsanityMod.Managers
         {
             if (!_roundActive) return;
 
+            float apparatusMultiplier = (_apparatusRemoved && player.isInsideFactory)
+                ? ModConfig.ApparatusMultiplier.Value : 1f;
+
             float baseDelta = InsanityCalculator.TickDelta(
                 player.isInsideFactory,
                 player.isInHangarShipRoom,
-                ModConfig.InsanityRateInFacility.Value,
+                ModConfig.InsanityRateInFacility.Value * apparatusMultiplier,
                 ModConfig.InsanityRateOnShip.Value,
                 ModConfig.InsanityDecayOutdoor.Value,
                 BloodNightManager.IsActive ? ModConfig.BloodNightMultiplier.Value : 1f,
@@ -52,6 +66,22 @@ namespace InsanityMod.Managers
             VFXManager.UpdateTunnelVision(_insanity);
             InsanityHud.UpdateValue(_insanity);
             VoiceHaunt.Tick(_insanity, deltaTime);
+
+            if (_insanity >= 100f && !_hasTransformedThisRound && !MaskedTransformManager.IsActive
+                && ModConfig.EnableMaskedTransform.Value)
+            {
+                _hasTransformedThisRound = true;
+                MaskedTransformManager.TriggerTransform(player);
+            }
+
+            if (MaskedTransformManager.IsActive)
+                MaskedTransformManager.Tick(player, deltaTime);
+        }
+
+        public static void ResetOnDeath()
+        {
+            _insanity = 0f;
+            InsanityHud.UpdateValue(0f);
         }
 
         public static void AddInsanity(float amount)

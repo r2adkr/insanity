@@ -7,6 +7,7 @@ namespace InsanityMod.Managers
     internal static class VFXManager
     {
         private static Image? _overlay;
+        private static Image? _blackOverlay;
         private static Sprite? _vignetteSprite;
 
         public static void Initialize()
@@ -45,6 +46,16 @@ namespace InsanityMod.Managers
             _overlay.raycastTarget = false;
             _overlay.sprite        = GetVignetteSprite();
             _overlay.color         = new Color(1f, 0f, 0f, 0f);
+
+            var blackGO  = new GameObject("InsanityVFX_Black");
+            blackGO.transform.SetParent(canvasGO.transform, false);
+            var blackRt       = blackGO.AddComponent<RectTransform>();
+            blackRt.anchorMin = Vector2.zero;
+            blackRt.anchorMax = Vector2.one;
+            blackRt.sizeDelta = Vector2.zero;
+            _blackOverlay               = blackGO.AddComponent<Image>();
+            _blackOverlay.raycastTarget = false;
+            _blackOverlay.color         = new Color(0f, 0f, 0f, 0f);
         }
 
         private static Sprite GetVignetteSprite()
@@ -91,10 +102,16 @@ namespace InsanityMod.Managers
             _overlay.color = new Color(0.45f * pulse, 0.02f, 0.02f, newAlpha);
         }
 
+        public static void SetBlackout(float alpha)
+        {
+            if (_blackOverlay == null) return;
+            _blackOverlay.color = new Color(0f, 0f, 0f, alpha);
+        }
+
         public static void ClearEffect()
         {
-            if (_overlay == null) return;
-            _overlay.color = new Color(1f, 0f, 0f, 0f);
+            if (_overlay != null)      _overlay.color      = new Color(1f, 0f, 0f, 0f);
+            if (_blackOverlay != null) _blackOverlay.color = new Color(0f, 0f, 0f, 0f);
         }
     }
 }

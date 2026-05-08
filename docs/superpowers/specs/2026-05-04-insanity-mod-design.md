@@ -52,14 +52,20 @@ InsanityMod/
 - 클라이언트 사이드 전용 (타인에게 수치 자체는 전송하지 않음)
 - `maxInsanityThisRound`: 라운드 중 도달한 최대값 추적, 종료 시 공유
 
+### 위치 감지 (LC V80+ PlayerControllerB 필드)
+
+- 시설 내부: `player.isInsideFactory == true`
+- 함선 내부: `player.isInHangarShipRoom == true`
+- 야외: 위 둘 다 false
+
 ### 매 틱(Update) 계산 로직
 
 ```
-if (플레이어가 시설 내부)
+if (player.isInsideFactory)
     delta = +Config.InsanityRateInFacility * BloodNightMultiplier * deltaTime
-else if (플레이어가 야외)
+else if (!player.isInHangarShipRoom)   // 야외
     delta = -Config.InsanityDecayOutdoor * deltaTime
-else if (플레이어가 함선 내부)
+else                                    // 함선
     delta = +Config.InsanityRateOnShip * deltaTime   // 잠수 방지, 시설보다 낮음
 
 insanity = Clamp(insanity + delta, 0f, 100f)
@@ -68,6 +74,7 @@ maxInsanityThisRound = Max(maxInsanityThisRound, insanity)
 
 ### 팀원 광기 오디오 단서 (네트워크 동기화)
 
+`insanity >= Config.InsanityAudioThreshold` (기본 50%) 조건 충족 시 트리거.  
 광기 수치 구간별로 타인에게 3D AudioSource 사운드 재생 (ClientRpc):
 
 | 구간 | 효과 |

@@ -37,7 +37,16 @@ namespace InsanityMod
         {
             if (!InsanityManager.IsRoundActive) return;
             var local = GameNetworkManager.Instance?.localPlayerController;
-            if (local == null || local.isPlayerDead) return;
+            if (local == null) return;
+
+            if (local.isPlayerDead)
+            {
+                MaskedTransformManager.Reset();
+                VFXManager.ClearEffect();
+                InsanityManager.ResetOnDeath();
+                return;
+            }
+
             CameraShakeManager.ApplyShake(local, InsanityManager.Insanity);
         }
     }
