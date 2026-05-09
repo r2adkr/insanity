@@ -34,5 +34,13 @@ namespace InsanityMod.Patches
             InsanityNetworkHandler.UnregisterHandlers();
             InsanityManager.EndRound();
         }
+
+        [HarmonyPatch("OnDestroy")]
+        [HarmonyPostfix]
+        private static void OnDestroyPostfix()
+        {
+            InsanityManager.EndRound();
+            VFXManager.ClearEffect();
+        }
     }
 }

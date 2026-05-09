@@ -8,7 +8,7 @@ A Lethal Company mod that tracks player sanity and makes high-insanity runs genu
 
 ## Dependencies
 
-- [WeatherRegistry](https://thunderstore.io/c/lethal-company/p/mrov/WeatherRegistry/) — required for Blood Night weather
+- [WeatherRegistry](https://thunderstore.io/c/lethal-company/p/mrov/WeatherRegistry/) — required for Paranoia weather
 
 ---
 
@@ -28,7 +28,7 @@ Insanity (0–100%) accumulates while you're inside the facility and drains whil
 |---------|--------|
 | Visible enemy nearby | +rate per second (scales by enemy type) |
 | Watching a teammate die | instant spike |
-| Blood Night weather | rate multiplier |
+| Paranoia weather | rate multiplier |
 | Certain in-game events | additional multipliers |
 
 Enemy threat scale (examples): Bracken / Ghost Girl = 2.0×, Jester / Coilhead = 1.5×, Forest Giant / Masked = 1.4×, Sand Worm = 1.8×, Thumper = 0.8×
@@ -75,9 +75,9 @@ Pulling the apparatus from the facility cuts the power — and doubles the insan
 
 ---
 
-## Blood Night weather
+## Paranoia weather
 
-A new custom weather event. During Blood Night the sky turns red, insanity accumulates 20% faster in the facility, and enemies are more active. Appears at roughly 3% chance per night (configurable).
+A new custom weather event. During Paranoia the sky turns red, insanity accumulates 20% faster in the facility, and enemies are more active. Appears at roughly 3% chance per night (configurable).
 
 ---
 
@@ -102,8 +102,8 @@ All values are in `BepInEx/config/com.insanitymod.lethalcompany.cfg`.
 | `InsanityRateInFacility` | `0.167` | Insanity/s inside facility |
 | `InsanityRateOnShip` | `0` | Insanity/s on ship |
 | `InsanityDecayOutdoor` | `0.8` | Insanity/s lost outdoors |
-| `BloodNightMultiplier` | `1.2` | Rate multiplier during Blood Night |
-| `BloodNightSpawnWeight` | `20` | Spawn weight (other weathers: 100) |
+| `ParanoiaMultiplier` | `1.2` | Rate multiplier during Paranoia weather |
+| `ParanoiaSpawnWeight` | `20` | Spawn weight (other weathers: 100) |
 | `TunnelVisionThreshold` | `80` | % at which vignette begins |
 | `MobVisibilityScale` | `1.0` | Global multiplier for enemy-visibility rate |
 | `MobVisibilityRange` | `30` | Max distance (m) for enemy detection |

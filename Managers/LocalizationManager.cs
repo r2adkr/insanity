@@ -57,7 +57,7 @@ namespace InsanityMod.Managers
             _strings["item.potion.name"]    = "Lucid Doom";
             _strings["item.potion.use"]     = "Vision cleared, but...";
             _strings["hud.max_insanity"]    = "Peak Insanity";
-            _strings["weather.blood_night"] = "Blood Night";
+            _strings["weather.blood_night"] = "Paranoia";
         }
 
         private static Dictionary<string, Dictionary<string, string>> ParseLangSections(string json)

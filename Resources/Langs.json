@@ -1,10 +1,10 @@
 {
   "KO": {
     "hud.max_insanity":   "최대 광기",
-    "weather.blood_night":"피의 밤"
+    "weather.blood_night":"편집증"
   },
   "EN": {
     "hud.max_insanity":   "Peak Insanity",
-    "weather.blood_night":"Blood Night"
+    "weather.blood_night":"Paranoia"
   }
 }

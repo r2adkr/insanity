@@ -27,15 +27,15 @@ namespace InsanityMod
         public static void Initialize(ConfigFile cfg)
         {
             const string S_INS = "Insanity";
-            const string S_BN  = "BloodNight";
+            const string S_BN  = "Paranoia";
             const string S_VFX = "VFX";
             const string S_REA = "Reactions";
 
             InsanityRateInFacility = cfg.Bind(S_INS, "InsanityRateInFacility", 0.167f, "Insanity gained per second inside the facility (baseline, ~10 min solo to 100%).");
             InsanityRateOnShip     = cfg.Bind(S_INS, "InsanityRateOnShip",     0f,   "Insanity gained per second on the ship.");
             InsanityDecayOutdoor   = cfg.Bind(S_INS, "InsanityDecayOutdoor",   0.8f, "Insanity lost per second outdoors.");
-            BloodNightMultiplier   = cfg.Bind(S_BN,  "BloodNightMultiplier",   1.2f, "Insanity rate multiplier when Blood Night weather is active.");
-            BloodNightSpawnWeight  = cfg.Bind(S_BN,  "BloodNightSpawnWeight",  20,   "Spawn weight for Blood Night weather (other weathers are 100, so ~3% per night at 20).");
+            BloodNightMultiplier   = cfg.Bind(S_BN,  "ParanoiaMultiplier",   1.2f, "Insanity rate multiplier when Paranoia weather is active.");
+            BloodNightSpawnWeight  = cfg.Bind(S_BN,  "ParanoiaSpawnWeight",  20,   "Spawn weight for Paranoia weather (other weathers are 100, so ~3% per night at 20).");
             TunnelVisionThreshold  = cfg.Bind(S_VFX, "TunnelVisionThreshold",  80f,  "Insanity % at which the red tunnel-vision overlay starts.");
 
             MobVisibilityScale      = cfg.Bind(S_REA, "MobVisibilityScale",      1f,    "Multiplier for insanity gained per second per visible enemy (per-type rates are scaled by this).");
