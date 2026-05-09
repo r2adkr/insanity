@@ -4,6 +4,7 @@ namespace InsanityMod
 {
     internal static class ModConfig
     {
+        public static ConfigEntry<string> Language               { get; private set; } = null!;
         public static ConfigEntry<float> InsanityRateInFacility  { get; private set; } = null!;
         public static ConfigEntry<float> InsanityRateOnShip      { get; private set; } = null!;
         public static ConfigEntry<float> InsanityDecayOutdoor    { get; private set; } = null!;
@@ -24,7 +25,7 @@ namespace InsanityMod
         public static ConfigEntry<float> GhostGirlBoostThreshold { get; private set; } = null!;
         public static ConfigEntry<float> VoiceHauntThreshold     { get; private set; } = null!;
         public static ConfigEntry<float> LightProximityRange      { get; private set; } = null!;
-        public static ConfigEntry<float> ApparatusMultiplier     { get; private set; } = null!;
+        public static ConfigEntry<float> ApparatusSpike          { get; private set; } = null!;
         public static ConfigEntry<bool>  EnableMaskedTransform  { get; private set; } = null!;
 
         public static void Initialize(ConfigFile cfg)
@@ -34,6 +35,7 @@ namespace InsanityMod
             const string S_VFX = "VFX";
             const string S_REA = "Reactions";
 
+            Language               = cfg.Bind("General", "Language", "AUTO", "Display language. AUTO detects from system locale. Options: AUTO, EN, KO.");
             InsanityRateInFacility = cfg.Bind(S_INS, "InsanityRateInFacility", 0.167f, "Insanity gained per second inside the facility (baseline, ~10 min solo to 100%).");
             InsanityRateOnShip     = cfg.Bind(S_INS, "InsanityRateOnShip",     0f,   "Insanity gained per second on the ship.");
             InsanityDecayOutdoor   = cfg.Bind(S_INS, "InsanityDecayOutdoor",   0.8f, "Insanity lost per second outdoors (daytime).");
@@ -54,7 +56,7 @@ namespace InsanityMod
             GhostGirlBoostThreshold = cfg.Bind(S_REA, "GhostGirlBoostThreshold", 80f,   "Insanity % above which the host slightly raises Ghost Girl haunt chance (set high to disable).");
             VoiceHauntThreshold     = cfg.Bind(S_REA, "VoiceHauntThreshold",     70f,   "Insanity % at which voice distortion + recorded teammate voice playback start.");
             LightProximityRange  = cfg.Bind(S_REA, "LightProximityRange",  8f,   "Max distance (m) to a facility light for the light proximity buff.");
-            ApparatusMultiplier   = cfg.Bind(S_REA, "ApparatusMultiplier",   2.0f, "Insanity rate multiplier inside the facility after the apparatus is removed (lights out).");
+            ApparatusSpike        = cfg.Bind(S_REA, "ApparatusSpike",        15f,  "Instant insanity gain when the apparatus is removed. Also disables insanity-reduction buffs inside the facility for the rest of the round.");
             EnableMaskedTransform = cfg.Bind(S_REA, "EnableMaskedTransform", true, "If true, reaching 100% insanity transforms the player into a Masked enemy.");
         }
     }

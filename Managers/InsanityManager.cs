@@ -18,7 +18,9 @@ namespace InsanityMod.Managers
 
         public static void OnApparatusRemoved()
         {
-            if (_roundActive) _apparatusRemoved = true;
+            if (!_roundActive) return;
+            _apparatusRemoved = true;
+            AddInsanity(ModConfig.ApparatusSpike.Value);
         }
 
         public static void StartRound()
@@ -45,9 +47,6 @@ namespace InsanityMod.Managers
         {
             if (!_roundActive) return;
 
-            float apparatusMultiplier = (_apparatusRemoved && player.isInsideFactory)
-                ? ModConfig.ApparatusMultiplier.Value : 1f;
-
             bool isOutdoor = !player.isInsideFactory && !player.isInHangarShipRoom;
             float outdoorRate;
             if (isOutdoor && StartOfRound.Instance?.currentLevel?.currentWeather == LevelWeatherType.Eclipsed)
@@ -61,7 +60,7 @@ namespace InsanityMod.Managers
             float baseDelta = InsanityCalculator.TickDelta(
                 player.isInsideFactory,
                 player.isInHangarShipRoom,
-                ModConfig.InsanityRateInFacility.Value * apparatusMultiplier,
+                ModConfig.InsanityRateInFacility.Value,
                 ModConfig.InsanityRateOnShip.Value,
                 outdoorRate,
                 BloodNightManager.IsActive ? ModConfig.BloodNightMultiplier.Value : 1f,
@@ -69,6 +68,8 @@ namespace InsanityMod.Managers
 
             float bonusRate  = InsanityModifiers.ComputeBonusRate(player);
             float bonusDelta = bonusRate * deltaTime;
+            if (_apparatusRemoved && player.isInsideFactory)
+                bonusDelta = System.Math.Max(bonusDelta, 0f);
 
             _insanity = InsanityCalculator.Clamp(_insanity + baseDelta + bonusDelta);
             if (_insanity > _maxInsanityThisRound)

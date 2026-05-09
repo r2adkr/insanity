@@ -46,6 +46,10 @@ namespace InsanityMod.Managers
 
         private static string DetectLanguage()
         {
+            var configured = ModConfig.Language.Value?.Trim().ToUpper();
+            if (!string.IsNullOrEmpty(configured) && configured != "AUTO")
+                return configured;
+
             return System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName.ToUpper()
                 switch { "KO" => "KO", _ => "EN" };
         }

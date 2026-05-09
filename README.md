@@ -16,10 +16,11 @@ A Lethal Company mod that tracks player sanity and makes high-insanity runs genu
 
 ### Insanity meter
 
-Insanity (0–100%) accumulates while you're inside the facility and drains while you're outdoors. On the ship it stays flat.
+Insanity (0–100%) accumulates while you're inside the facility and drains while you're outdoors during the day. On the ship it stays flat.
 
 - **Solo in the facility:** ~10 minutes to 100%
-- **Outdoors:** slowly decays back toward 0
+- **Outdoors (daytime):** slowly decays back toward 0
+- **Outdoors (night / Eclipse):** insanity rises instead of falling
 - **Resets each round** — every new expedition starts fresh
 
 ### Things that make it worse
@@ -29,7 +30,8 @@ Insanity (0–100%) accumulates while you're inside the facility and drains whil
 | Visible enemy nearby | +rate per second (scales by enemy type) |
 | Watching a teammate die | instant spike |
 | Paranoia weather | rate multiplier |
-| Certain in-game events | additional multipliers |
+| Night outdoors | slow rise instead of decay |
+| Eclipse weather outdoors | faster rise than night |
 
 Enemy threat scale (examples): Bracken / Ghost Girl = 2.0×, Jester / Coilhead = 1.5×, Forest Giant / Masked = 1.4×, Sand Worm = 1.8×, Thumper = 0.8×
 
@@ -41,7 +43,7 @@ Enemy threat scale (examples): Bracken / Ghost Girl = 2.0×, Jester / Coilhead =
 | Flashlight on / in ship | −0.1/s |
 | Near a facility light | −0.1/s |
 
-Being with a teammate near a light source in the facility effectively keeps insanity stable.
+Being with a teammate near a light source in the facility effectively keeps insanity stable — unless the apparatus has been removed.
 
 ---
 
@@ -69,7 +71,7 @@ Insanity peaks. Movement gradually slows to a halt, the screen fades to black, a
 The transformation can be disabled in config (`EnableMaskedTransform = false`).
 
 ### Apparatus removal
-Pulling the apparatus from the facility cuts the power — and doubles the insanity rate inside for the rest of the round. The effect is round-wide; any player entering the facility after the pull is also affected.
+Pulling the apparatus triggers an immediate insanity spike for everyone in the round. For the rest of the round, insanity-reduction buffs (teammate proximity, flashlight, facility lights) no longer work inside the facility — insanity can only rise in there. Outdoors is unaffected.
 
 </details>
 
@@ -77,7 +79,7 @@ Pulling the apparatus from the facility cuts the power — and doubles the insan
 
 ## Paranoia weather
 
-A new custom weather event. During Paranoia the sky turns red, insanity accumulates 20% faster in the facility, and enemies are more active. Appears at roughly 3% chance per night (configurable).
+A custom weather event. During Paranoia, insanity accumulates faster in the facility and enemies are more active. Appears at roughly 3% chance per night (configurable).
 
 ---
 
@@ -101,7 +103,10 @@ All values are in `BepInEx/config/com.insanitymod.lethalcompany.cfg`.
 |-----|---------|-------------|
 | `InsanityRateInFacility` | `0.167` | Insanity/s inside facility |
 | `InsanityRateOnShip` | `0` | Insanity/s on ship |
-| `InsanityDecayOutdoor` | `0.8` | Insanity/s lost outdoors |
+| `InsanityDecayOutdoor` | `0.8` | Insanity/s lost outdoors (daytime) |
+| `NightOutdoorRate` | `0.05` | Insanity/s gained outdoors at night (0 = disabled) |
+| `NightStartHour` | `19` | Game hour at which night begins (0–23) |
+| `EclipseOutdoorRate` | `0.1` | Insanity/s gained outdoors during Eclipse |
 | `ParanoiaMultiplier` | `1.2` | Rate multiplier during Paranoia weather |
 | `ParanoiaSpawnWeight` | `20` | Spawn weight (other weathers: 100) |
 | `TunnelVisionThreshold` | `80` | % at which vignette begins |
@@ -115,7 +120,7 @@ All values are in `BepInEx/config/com.insanitymod.lethalcompany.cfg`.
 | `DeathWitnessRange` | `40` | Max distance (m) for death witness check |
 | `GhostGirlBoostThreshold` | `80` | % above which Ghost Girl haunt speed increases |
 | `VoiceHauntThreshold` | `70` | % at which voice distortion + haunting begins |
-| `ApparatusMultiplier` | `2.0` | *(spoiler)* Rate multiplier inside facility after apparatus is removed |
+| `ApparatusSpike` | `15` | *(spoiler)* Instant insanity gain when apparatus is removed |
 | `EnableMaskedTransform` | `true` | *(spoiler)* If false, the 100% effect is skipped entirely |
 
 ---
@@ -125,6 +130,21 @@ All values are in `BepInEx/config/com.insanitymod.lethalcompany.cfg`.
 1. Install BepInEx 5.4.23.5+
 2. Install WeatherRegistry
 3. Drop `InsanityMod.dll` into `BepInEx/plugins/InsanityMod/`
+
+---
+
+## Changelog
+
+### v1.0.1
+- **Fix:** Insanity HUD no longer visible on the main menu after exiting a save
+- **Fix:** Tunnel vision and other VFX now properly clear when returning to the main menu mid-round
+- **New:** Insanity rises outdoors at night instead of decaying (configurable, default 0.05/s after hour 19)
+- **New:** Eclipse weather also raises insanity outdoors at a higher rate (default 0.1/s)
+- **Change:** Renamed "Blood Night" weather to **Paranoia** to avoid confusion with the existing Blood Moon event
+- **Change:** Apparatus removal reworked — now triggers an immediate insanity spike (+15) and disables all insanity-reduction buffs inside the facility for the rest of the round (replaced the ×2.0 rate multiplier)
+
+### v1.0.0
+- Initial release
 
 ---
 
