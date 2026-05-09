@@ -49,7 +49,9 @@ namespace InsanityMod.Managers
 
             bool isOutdoor = !player.isInsideFactory && !player.isInHangarShipRoom;
             float outdoorRate;
-            if (isOutdoor && StartOfRound.Instance?.currentLevel?.currentWeather == LevelWeatherType.Eclipsed)
+            if (isOutdoor && BloodNightManager.IsActive)
+                outdoorRate = ModConfig.ParanoiaOutdoorRate.Value;
+            else if (isOutdoor && StartOfRound.Instance?.currentLevel?.currentWeather == LevelWeatherType.Eclipsed)
                 outdoorRate = ModConfig.EclipseOutdoorRate.Value;
             else if (isOutdoor && ModConfig.NightOutdoorRate.Value > 0f
                 && (TimeOfDay.Instance?.hour ?? 0) >= ModConfig.NightStartHour.Value)
