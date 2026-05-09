@@ -9,19 +9,39 @@ namespace InsanityMod.Tests
         {
             float delta = InsanityCalculator.TickDelta(
                 isInFacility: true, isInShip: false,
-                rateInFacility: 0.5f, rateOnShip: 0.1f, decayOutdoor: 0.8f,
+                rateInFacility: 0.5f, rateOnShip: 0.1f, outdoorRate: -0.8f,
                 multiplier: 1.0f, deltaTime: 1.0f);
             Assert.Equal(0.5f, delta);
         }
 
         [Fact]
-        public void Outdoor_decreases_insanity()
+        public void Outdoor_daytime_decreases_insanity()
         {
             float delta = InsanityCalculator.TickDelta(
                 isInFacility: false, isInShip: false,
-                rateInFacility: 0.5f, rateOnShip: 0.1f, decayOutdoor: 0.8f,
+                rateInFacility: 0.5f, rateOnShip: 0.1f, outdoorRate: -0.8f,
                 multiplier: 1.0f, deltaTime: 1.0f);
             Assert.Equal(-0.8f, delta);
+        }
+
+        [Fact]
+        public void Outdoor_night_increases_insanity()
+        {
+            float delta = InsanityCalculator.TickDelta(
+                isInFacility: false, isInShip: false,
+                rateInFacility: 0.5f, rateOnShip: 0.1f, outdoorRate: 0.05f,
+                multiplier: 1.0f, deltaTime: 1.0f);
+            Assert.Equal(0.05f, delta, precision: 4);
+        }
+
+        [Fact]
+        public void Outdoor_eclipse_increases_insanity_faster()
+        {
+            float delta = InsanityCalculator.TickDelta(
+                isInFacility: false, isInShip: false,
+                rateInFacility: 0.5f, rateOnShip: 0.1f, outdoorRate: 0.1f,
+                multiplier: 1.0f, deltaTime: 1.0f);
+            Assert.Equal(0.1f, delta, precision: 4);
         }
 
         [Fact]
@@ -29,17 +49,17 @@ namespace InsanityMod.Tests
         {
             float delta = InsanityCalculator.TickDelta(
                 isInFacility: false, isInShip: true,
-                rateInFacility: 0.5f, rateOnShip: 0.1f, decayOutdoor: 0.8f,
+                rateInFacility: 0.5f, rateOnShip: 0.1f, outdoorRate: -0.8f,
                 multiplier: 1.0f, deltaTime: 1.0f);
             Assert.Equal(0.1f, delta);
         }
 
         [Fact]
-        public void BloodNight_multiplier_applied_in_facility()
+        public void Paranoia_multiplier_applied_in_facility()
         {
             float delta = InsanityCalculator.TickDelta(
                 isInFacility: true, isInShip: false,
-                rateInFacility: 0.5f, rateOnShip: 0.1f, decayOutdoor: 0.8f,
+                rateInFacility: 0.5f, rateOnShip: 0.1f, outdoorRate: -0.8f,
                 multiplier: 1.2f, deltaTime: 1.0f);
             Assert.Equal(0.6f, delta, precision: 4);
         }

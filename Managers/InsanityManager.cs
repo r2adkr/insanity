@@ -1,5 +1,6 @@
 using GameNetcodeStuff;
 using InsanityMod.Voice;
+using UnityEngine;
 
 namespace InsanityMod.Managers
 {
@@ -47,12 +48,22 @@ namespace InsanityMod.Managers
             float apparatusMultiplier = (_apparatusRemoved && player.isInsideFactory)
                 ? ModConfig.ApparatusMultiplier.Value : 1f;
 
+            bool isOutdoor = !player.isInsideFactory && !player.isInHangarShipRoom;
+            float outdoorRate;
+            if (isOutdoor && StartOfRound.Instance?.currentLevel?.currentWeather == LevelWeatherType.Eclipsed)
+                outdoorRate = ModConfig.EclipseOutdoorRate.Value;
+            else if (isOutdoor && ModConfig.NightOutdoorRate.Value > 0f
+                && (TimeOfDay.Instance?.hour ?? 0) >= ModConfig.NightStartHour.Value)
+                outdoorRate = ModConfig.NightOutdoorRate.Value;
+            else
+                outdoorRate = -ModConfig.InsanityDecayOutdoor.Value;
+
             float baseDelta = InsanityCalculator.TickDelta(
                 player.isInsideFactory,
                 player.isInHangarShipRoom,
                 ModConfig.InsanityRateInFacility.Value * apparatusMultiplier,
                 ModConfig.InsanityRateOnShip.Value,
-                ModConfig.InsanityDecayOutdoor.Value,
+                outdoorRate,
                 BloodNightManager.IsActive ? ModConfig.BloodNightMultiplier.Value : 1f,
                 deltaTime);
 

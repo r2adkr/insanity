@@ -7,6 +7,9 @@ namespace InsanityMod
         public static ConfigEntry<float> InsanityRateInFacility  { get; private set; } = null!;
         public static ConfigEntry<float> InsanityRateOnShip      { get; private set; } = null!;
         public static ConfigEntry<float> InsanityDecayOutdoor    { get; private set; } = null!;
+        public static ConfigEntry<float> NightOutdoorRate        { get; private set; } = null!;
+        public static ConfigEntry<int>   NightStartHour          { get; private set; } = null!;
+        public static ConfigEntry<float> EclipseOutdoorRate      { get; private set; } = null!;
         public static ConfigEntry<float> BloodNightMultiplier    { get; private set; } = null!;
         public static ConfigEntry<int>   BloodNightSpawnWeight   { get; private set; } = null!;
         public static ConfigEntry<float> TunnelVisionThreshold   { get; private set; } = null!;
@@ -33,7 +36,10 @@ namespace InsanityMod
 
             InsanityRateInFacility = cfg.Bind(S_INS, "InsanityRateInFacility", 0.167f, "Insanity gained per second inside the facility (baseline, ~10 min solo to 100%).");
             InsanityRateOnShip     = cfg.Bind(S_INS, "InsanityRateOnShip",     0f,   "Insanity gained per second on the ship.");
-            InsanityDecayOutdoor   = cfg.Bind(S_INS, "InsanityDecayOutdoor",   0.8f, "Insanity lost per second outdoors.");
+            InsanityDecayOutdoor   = cfg.Bind(S_INS, "InsanityDecayOutdoor",   0.8f, "Insanity lost per second outdoors (daytime).");
+            NightOutdoorRate       = cfg.Bind(S_INS, "NightOutdoorRate",       0.05f, "Insanity gained per second outdoors at night. Set to 0 to disable.");
+            NightStartHour         = cfg.Bind(S_INS, "NightStartHour",         19,    "Game hour (0-23) at which night begins outdoors.");
+            EclipseOutdoorRate     = cfg.Bind(S_INS, "EclipseOutdoorRate",     0.1f,  "Insanity gained per second outdoors during Eclipse weather.");
             BloodNightMultiplier   = cfg.Bind(S_BN,  "ParanoiaMultiplier",   1.2f, "Insanity rate multiplier when Paranoia weather is active.");
             BloodNightSpawnWeight  = cfg.Bind(S_BN,  "ParanoiaSpawnWeight",  20,   "Spawn weight for Paranoia weather (other weathers are 100, so ~3% per night at 20).");
             TunnelVisionThreshold  = cfg.Bind(S_VFX, "TunnelVisionThreshold",  80f,  "Insanity % at which the red tunnel-vision overlay starts.");

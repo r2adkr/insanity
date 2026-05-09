@@ -6,15 +6,15 @@ namespace InsanityMod
     {
         public static float TickDelta(
             bool isInFacility, bool isInShip,
-            float rateInFacility, float rateOnShip, float decayOutdoor,
+            float rateInFacility, float rateOnShip, float outdoorRate,
             float multiplier, float deltaTime)
         {
             float rate;
             if (isInFacility)
                 rate = rateInFacility * multiplier;
-            else if (!isInShip)   // 야외
-                rate = -decayOutdoor;
-            else                  // 함선
+            else if (!isInShip)
+                rate = outdoorRate;
+            else
                 rate = rateOnShip;
 
             return rate * deltaTime;
