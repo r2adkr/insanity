@@ -1,8 +1,6 @@
 using HarmonyLib;
 using InsanityMod.Managers;
 using InsanityMod.Network;
-using TMPro;
-using UnityEngine;
 
 namespace InsanityMod.Patches
 {
@@ -15,35 +13,25 @@ namespace InsanityMod.Patches
         {
             if (InsanityNetworkHandler.PlayerMaxInsanity.Count == 0) return;
 
-            var statsContainer = __instance.statsUIElements?.penaltyTotal?.transform.parent;
-            if (statsContainer == null) return;
-
-            var existing = statsContainer.Find("InsanityStats");
-            if (existing != null) Object.Destroy(existing.gameObject);
+            var addition = __instance.statsUIElements?.penaltyAddition;
+            if (addition == null) return;
 
             string header = LocalizationManager.Get("hud.max_insanity");
-            var lineGO = new GameObject("InsanityStats", typeof(RectTransform));
-            lineGO.transform.SetParent(statsContainer, false);
-
-            var text = lineGO.AddComponent<TextMeshProUGUI>();
-            text.fontSize = 14f;
-            text.alignment = TextAlignmentOptions.Left;
-
             var sb = new System.Text.StringBuilder();
-            sb.AppendLine($"<b>— {header} —</b>");
+            sb.AppendLine();
+            sb.Append($"<color=#CC4444>— {header} —</color>");
 
             foreach (var player in StartOfRound.Instance.allPlayerScripts)
             {
                 ulong id = player.actualClientId;
                 if (!InsanityNetworkHandler.PlayerMaxInsanity.TryGetValue(id, out float max)) continue;
 
-                string name = player.playerUsername;
-                string pct = $"{max:F0}%";
-                string color = max >= 100f ? "<color=#FF4444>" : "<color=#DDDDDD>";
-                sb.AppendLine($"{color}{name}  {pct}</color>");
+                string color = max >= 100f ? "<color=#FF4444>" : max >= 80f ? "<color=#FF9933>" : "<color=#BBBBBB>";
+                sb.AppendLine();
+                sb.Append($"{color}{player.playerUsername}: {max:F0}%</color>");
             }
 
-            text.text = sb.ToString();
+            addition.text += sb.ToString();
         }
     }
 }

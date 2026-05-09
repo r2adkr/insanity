@@ -14,7 +14,9 @@ namespace InsanityMod
         public static ConfigEntry<float> ParanoiaOutdoorRate     { get; private set; } = null!;
         public static ConfigEntry<float> BloodNightMultiplier    { get; private set; } = null!;
         public static ConfigEntry<int>   BloodNightSpawnWeight   { get; private set; } = null!;
-        public static ConfigEntry<float> TunnelVisionThreshold   { get; private set; } = null!;
+        public static ConfigEntry<float>  TunnelVisionThreshold  { get; private set; } = null!;
+        public static ConfigEntry<string> TunnelVisionColor      { get; private set; } = null!;
+        public static ConfigEntry<bool>   HideHudAtZero          { get; private set; } = null!;
 
         public static ConfigEntry<float> MobVisibilityScale      { get; private set; } = null!;
         public static ConfigEntry<float> MobVisibilityRange      { get; private set; } = null!;
@@ -46,7 +48,9 @@ namespace InsanityMod
             ParanoiaOutdoorRate    = cfg.Bind(S_INS, "ParanoiaOutdoorRate",    0.1f,  "Insanity gained per second outdoors during Paranoia weather.");
             BloodNightMultiplier   = cfg.Bind(S_BN,  "ParanoiaMultiplier",   1.2f, "Insanity rate multiplier when Paranoia weather is active.");
             BloodNightSpawnWeight  = cfg.Bind(S_BN,  "ParanoiaSpawnWeight",  20,   "Spawn weight for Paranoia weather (other weathers are 100, so ~3% per night at 20).");
-            TunnelVisionThreshold  = cfg.Bind(S_VFX, "TunnelVisionThreshold",  80f,  "Insanity % at which the red tunnel-vision overlay starts.");
+            TunnelVisionThreshold = cfg.Bind(S_VFX, "TunnelVisionThreshold", 80f,        "Insanity % at which the tunnel-vision overlay starts.");
+            TunnelVisionColor     = cfg.Bind(S_VFX, "TunnelVisionColor",     "#180202", "Tunnel vision overlay color (hex). Default is very dark red. Use #000000 for pure black.");
+            HideHudAtZero         = cfg.Bind(S_VFX, "HideHudAtZero",         false,     "If true, the insanity HUD ring is hidden while insanity is 0%.");
 
             MobVisibilityScale      = cfg.Bind(S_REA, "MobVisibilityScale",      1f,    "Multiplier for insanity gained per second per visible enemy (per-type rates are scaled by this).");
             MobVisibilityRange      = cfg.Bind(S_REA, "MobVisibilityRange",      30f,   "Max distance (m) at which a visible enemy contributes to insanity.");

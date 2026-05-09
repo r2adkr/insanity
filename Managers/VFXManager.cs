@@ -9,10 +9,13 @@ namespace InsanityMod.Managers
         private static Image? _overlay;
         private static Image? _blackOverlay;
         private static Sprite? _vignetteSprite;
+        private static Color  _tunnelColor = new Color(0.12f, 0.02f, 0.02f);
 
         public static void Initialize()
         {
             SceneManager.sceneLoaded += OnSceneLoaded;
+            if (ColorUtility.TryParseHtmlString(ModConfig.TunnelVisionColor.Value, out var c))
+                _tunnelColor = c;
         }
 
         private static void OnSceneLoaded(Scene scene, LoadSceneMode mode)
@@ -99,7 +102,7 @@ namespace InsanityMod.Managers
             float newAlpha  = Mathf.Lerp(current, target, Time.deltaTime * 2f);
 
             float pulse = 0.94f + 0.06f * Mathf.Sin(Time.time * 1.2f);
-            _overlay.color = new Color(0.45f * pulse, 0.02f, 0.02f, newAlpha);
+            _overlay.color = new Color(_tunnelColor.r * pulse, _tunnelColor.g * pulse, _tunnelColor.b * pulse, newAlpha);
         }
 
         public static void SetBlackout(float alpha)

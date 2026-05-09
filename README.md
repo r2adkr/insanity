@@ -99,8 +99,11 @@ After the ship leaves, the host broadcasts each player's peak insanity for the r
 
 All values are in `BepInEx/config/com.insanitymod.lethalcompany.cfg`.
 
+> **Language note:** The `Language` setting only accepts values defined in `Langs.json` (`AUTO`, `EN`, `KO`). Setting an unsupported language code will cause UI strings to display as raw keys (e.g. `hud.max_insanity` instead of `Peak Insanity`).
+
 | Key | Default | Description |
 |-----|---------|-------------|
+| `Language` | `AUTO` | Display language. `AUTO` detects from system locale. Supported: `EN`, `KO` |
 | `InsanityRateInFacility` | `0.167` | Insanity/s inside facility |
 | `InsanityRateOnShip` | `0` | Insanity/s on ship |
 | `InsanityDecayOutdoor` | `0.8` | Insanity/s lost outdoors (daytime) |
@@ -110,6 +113,8 @@ All values are in `BepInEx/config/com.insanitymod.lethalcompany.cfg`.
 | `ParanoiaMultiplier` | `1.2` | Rate multiplier during Paranoia weather |
 | `ParanoiaSpawnWeight` | `20` | Spawn weight (other weathers: 100) |
 | `TunnelVisionThreshold` | `80` | % at which vignette begins |
+| `TunnelVisionColor` | `#180202` | Tunnel vision overlay color (hex). Use `#000000` for pure black |
+| `HideHudAtZero` | `false` | If true, hides the insanity HUD ring while at 0% |
 | `MobVisibilityScale` | `1.0` | Global multiplier for enemy-visibility rate |
 | `MobVisibilityRange` | `30` | Max distance (m) for enemy detection |
 | `TeammateBuffRate` | `0.15` | Rate reduction near a teammate |
@@ -135,6 +140,18 @@ All values are in `BepInEx/config/com.insanitymod.lethalcompany.cfg`.
 
 ## Changelog
 
+### v1.0.2
+- **New:** Paranoia weather now has proper visual atmosphere — dark moody sky, dim red sun, light fog, and red color grading (HDRP volumes)
+- **New:** Rain particles activate during Paranoia weather
+- **New:** Custom terminal color for Paranoia weather (dark crimson)
+- **New:** `TunnelVisionColor` config — change overlay color via hex (default darker than before; less eye-strain)
+- **New:** `HideHudAtZero` config — option to hide the insanity HUD ring at 0%
+- **Fix:** Paranoia visuals now apply at the correct moment (after level finishes loading) instead of leaking into the ship-departure transition
+- **Fix:** Ship interior no longer pitch-black during Paranoia weather (fog/heavy darkening only applied outdoors)
+- **Fix:** Smooth fade-out of Paranoia visuals when the ship departs, instead of an abrupt pop
+- **Fix:** Voice haunt buffer is now cleared immediately on ship departure as well as round start
+- **Change:** End-of-round insanity stats now appended to the existing penalty breakdown text for cleaner integration with the evaluation screen
+
 ### v1.0.1
 - **Fix:** Insanity HUD no longer visible on the main menu after exiting a save
 - **Fix:** Tunnel vision and other VFX now properly clear when returning to the main menu mid-round
@@ -151,3 +168,5 @@ All values are in `BepInEx/config/com.insanitymod.lethalcompany.cfg`.
 ## Credits
 
 Built for Lethal Company V80–81. Uses [WeatherRegistry](https://thunderstore.io/c/lethal-company/p/mrov/WeatherRegistry/) by mrov and [Dissonance Voice Chat](https://dissonance.readthedocs.io/) for VOIP integration.
+
+Special thanks to **vDolo** for extensive playtesting and feedback that drove most of the v1.0.1 and v1.0.2 improvements.

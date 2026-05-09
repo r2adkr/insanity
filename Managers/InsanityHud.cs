@@ -38,6 +38,13 @@ namespace InsanityMod.Managers
 
         public static void UpdateValue(float insanity)
         {
+            if (_canvasGO != null && ModConfig.HideHudAtZero.Value)
+            {
+                bool shouldShow = insanity > 0.5f;
+                if (_canvasGO.activeSelf != shouldShow)
+                    _canvasGO.SetActive(shouldShow);
+            }
+
             if (_ringFill == null || _ringBg == null || _label == null) return;
 
             float t = Mathf.Clamp01(insanity / 100f);

@@ -5,6 +5,17 @@ using InsanityMod.Voice;
 
 namespace InsanityMod.Patches
 {
+    [HarmonyPatch(typeof(RoundManager))]
+    internal static class LevelGenerationPatcher
+    {
+        [HarmonyPatch("FinishGeneratingNewLevelClientRpc")]
+        [HarmonyPostfix]
+        private static void FinishGeneratingPostfix()
+        {
+            BloodNightManager.OnLevelLoaded();
+        }
+    }
+
     [HarmonyPatch(typeof(StartOfRound))]
     internal static class RoundPatcher
     {
@@ -17,6 +28,7 @@ namespace InsanityMod.Patches
             InsanityNetworkHandler.RegisterHandlers();
             VoiceHaunt.ResetForRound();
             InsanityModifiers.InvalidateLightCache();
+            BloodNightManager.OnRoundStart();
         }
 
         [HarmonyPatch("ShipLeave")]
@@ -24,6 +36,8 @@ namespace InsanityMod.Patches
         private static void ShipLeavePostfix()
         {
             InsanityNetworkHandler.SendMaxInsanity(InsanityManager.MaxInsanityThisRound);
+            BloodNightManager.OnRoundEnd();
+            VoiceHaunt.ResetForRound();
         }
 
         [HarmonyPatch("EndGameClientRpc")]
@@ -33,6 +47,7 @@ namespace InsanityMod.Patches
             InsanityNetworkHandler.BroadcastResults();
             InsanityNetworkHandler.UnregisterHandlers();
             InsanityManager.EndRound();
+            BloodNightManager.OnRoundEnd();
         }
 
         [HarmonyPatch("OnDestroy")]
@@ -40,6 +55,7 @@ namespace InsanityMod.Patches
         private static void OnDestroyPostfix()
         {
             InsanityManager.EndRound();
+            BloodNightManager.OnRoundEnd();
             VFXManager.ClearEffect();
         }
     }
