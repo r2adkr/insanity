@@ -82,7 +82,8 @@ namespace InsanityMod.Managers
             VoiceHaunt.Tick(_insanity, deltaTime);
 
             if (_insanity >= 100f && !_hasTransformedThisRound && !MaskedTransformManager.IsActive
-                && ModConfig.EnableMaskedTransform.Value)
+                && ModConfig.EnableMaskedTransform.Value
+                && (!ModConfig.MaskedTransformOnlyDuringParanoia.Value || BloodNightManager.IsActive))
             {
                 _hasTransformedThisRound = true;
                 MaskedTransformManager.TriggerTransform(player);
