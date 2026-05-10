@@ -1,5 +1,6 @@
 using Dissonance.Audio.Playback;
 using HarmonyLib;
+using InsanityMod.Patches;
 
 namespace InsanityMod.Voice
 {
@@ -8,7 +9,7 @@ namespace InsanityMod.Voice
     {
         [HarmonyPatch("OnAudioFilterRead")]
         [HarmonyPostfix]
-        private static void CaptureSamples(SamplePlaybackComponent __instance, float[] data, int channels)
+        private static void CaptureSamples(SamplePlaybackComponent __instance, float[] data, int channels) => SafePatch.Run(nameof(CaptureSamples), () =>
         {
             var track = VoiceHaunt.GetTrackFor(__instance);
             if (track == null || channels <= 0 || data.Length == 0) return;
@@ -23,6 +24,6 @@ namespace InsanityMod.Voice
                 mono[i] = sum / channels;
             }
             track.Buffer.Write(mono, 0, frameCount);
-        }
+        });
     }
 }
