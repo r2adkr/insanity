@@ -62,6 +62,13 @@ namespace InsanityMod.Managers
             EventManager.WeatherChanged.AddListener(OnWeatherChanged);
         }
 
+        public static void OnPluginDestroy()
+        {
+            _paranoiaLevels.Clear();
+            if (_bloodNightWeather != null)
+                EventManager.WeatherChanged.RemoveListener(OnWeatherChanged);
+        }
+
         private static void OnWeatherChanged((SelectableLevel level, Weather weather) args)
         {
             if (_bloodNightWeather == null) return;

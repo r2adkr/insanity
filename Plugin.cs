@@ -54,5 +54,10 @@ namespace InsanityMod
 
             CameraShakeManager.ApplyShake(local, InsanityManager.Insanity);
         }
+
+        private void OnDestroy()
+        {
+            BloodNightManager.OnPluginDestroy();
+        }
     }
 }
