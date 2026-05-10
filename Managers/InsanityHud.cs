@@ -13,6 +13,7 @@ namespace InsanityMod.Managers
         private const float ScreenMarginY = 130f;
 
         private static GameObject? _canvasGO;
+        private static CanvasGroup? _canvasGroup;
         private static Image? _ringFill;
         private static Image? _ringBg;
         private static TextMeshProUGUI? _label;
@@ -32,17 +33,16 @@ namespace InsanityMod.Managers
 
         public static void SetVisible(bool visible)
         {
-            if (_canvasGO == null) return;
-            _canvasGO.SetActive(visible);
+            if (_canvasGroup == null) return;
+            _canvasGroup.alpha = visible ? 1f : 0f;
         }
 
         public static void UpdateValue(float insanity)
         {
-            if (_canvasGO != null && ModConfig.HideHudAtZero.Value)
+            if (_canvasGroup != null)
             {
-                bool shouldShow = insanity > 0.5f;
-                if (_canvasGO.activeSelf != shouldShow)
-                    _canvasGO.SetActive(shouldShow);
+                float target = ModConfig.HideHudAtZero.Value && insanity <= 0.5f ? 0f : 1f;
+                _canvasGroup.alpha = Mathf.MoveTowards(_canvasGroup.alpha, target, Time.deltaTime * 2f);
             }
 
             if (_ringFill == null || _ringBg == null || _label == null) return;
@@ -66,6 +66,10 @@ namespace InsanityMod.Managers
             canvas.sortingOrder = 50;
             _canvasGO.AddComponent<CanvasScaler>();
             _canvasGO.AddComponent<GraphicRaycaster>();
+            _canvasGroup        = _canvasGO.AddComponent<CanvasGroup>();
+            _canvasGroup.alpha  = 1f;
+            _canvasGroup.interactable    = false;
+            _canvasGroup.blocksRaycasts  = false;
 
             var sprite = GetRingSprite();
 
