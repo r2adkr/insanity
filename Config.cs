@@ -30,6 +30,9 @@ namespace InsanityMod
         public static ConfigEntry<float> LightProximityRange      { get; private set; } = null!;
         public static ConfigEntry<float> ApparatusSpike          { get; private set; } = null!;
         public static ConfigEntry<bool>  EnableMaskedTransform  { get; private set; } = null!;
+        public static ConfigEntry<bool>  MaskedTransformOnlyDuringParanoia { get; private set; } = null!;
+        public static ConfigEntry<float> UnderwaterRate          { get; private set; } = null!;
+        public static ConfigEntry<float> CompanyMoonDecayRate    { get; private set; } = null!;
 
         public static void Initialize(ConfigFile cfg)
         {
@@ -64,6 +67,9 @@ namespace InsanityMod
             LightProximityRange  = cfg.Bind(S_REA, "LightProximityRange",  8f,   "Max distance (m) to a facility light for the light proximity buff.");
             ApparatusSpike        = cfg.Bind(S_REA, "ApparatusSpike",        15f,  "Instant insanity gain when the apparatus is removed. Also disables insanity-reduction buffs inside the facility for the rest of the round.");
             EnableMaskedTransform = cfg.Bind(S_REA, "EnableMaskedTransform", true, "If true, reaching 100% insanity transforms the player into a Masked enemy.");
+            MaskedTransformOnlyDuringParanoia = cfg.Bind(S_REA, "MaskedTransformOnlyDuringParanoia", true,  "If true, the 100% Masked transformation only triggers when Paranoia weather is active.");
+            UnderwaterRate         = cfg.Bind(S_REA, "UnderwaterRate",         0.4f,  "Insanity gained per second while the local player is underwater.");
+            CompanyMoonDecayRate   = cfg.Bind(S_INS, "CompanyMoonDecayRate",   0.5f,  "Insanity reduced per second while on the Company building moon (71 Gordion).");
         }
     }
 }
