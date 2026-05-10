@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using InsanityMod.Patches;
 using Unity.Collections;
 using Unity.Netcode;
 using UnityEngine;
@@ -48,11 +49,11 @@ namespace InsanityMod.Network
             writer.Dispose();
         }
 
-        private static void ReceiveMaxInsanity(ulong senderId, FastBufferReader reader)
+        private static void ReceiveMaxInsanity(ulong senderId, FastBufferReader reader) => SafePatch.Run(nameof(ReceiveMaxInsanity), () =>
         {
             reader.ReadValueSafe(out float val);
             PlayerMaxInsanity[senderId] = val;
-        }
+        });
 
         public static void BroadcastResults()
         {
@@ -73,7 +74,7 @@ namespace InsanityMod.Network
             writer.Dispose();
         }
 
-        private static void ReceiveBroadcastResults(ulong _, FastBufferReader reader)
+        private static void ReceiveBroadcastResults(ulong _, FastBufferReader reader) => SafePatch.Run(nameof(ReceiveBroadcastResults), () =>
         {
             reader.ReadValueSafe(out int count);
             PlayerMaxInsanity.Clear();
@@ -83,7 +84,7 @@ namespace InsanityMod.Network
                 reader.ReadValueSafe(out float val);
                 PlayerMaxInsanity[id] = val;
             }
-        }
+        });
 
         public static void SendSpawnMasked(GameNetcodeStuff.PlayerControllerB local)
         {
@@ -110,7 +111,7 @@ namespace InsanityMod.Network
             writer.Dispose();
         }
 
-        private static void ReceiveSpawnMasked(ulong _, FastBufferReader reader)
+        private static void ReceiveSpawnMasked(ulong _, FastBufferReader reader) => SafePatch.Run(nameof(ReceiveSpawnMasked), () =>
         {
             reader.ReadValueSafe(out float px);
             reader.ReadValueSafe(out float py);
@@ -139,7 +140,7 @@ namespace InsanityMod.Network
                 masked.SetSuit(p.currentSuitID);
                 break;
             }
-        }
+        });
 
         private static EnemyType? GetMaskedEnemyType()
         {
