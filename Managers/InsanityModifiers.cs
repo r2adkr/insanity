@@ -46,9 +46,25 @@ namespace InsanityMod.Managers
 
             float rate = 0f;
             rate += MobVisibilityBonus(local);
+            rate += UnderwaterBonus(local);
             rate -= ProximityBuff(local);
             rate -= LightBuff(local);
+            rate -= CompanyMoonBonus(local);
             return rate;
+        }
+
+        public static float UnderwaterBonus(PlayerControllerB local)
+        {
+            return local.isUnderwater ? ModConfig.UnderwaterRate.Value : 0f;
+        }
+
+        public static float CompanyMoonBonus(PlayerControllerB local)
+        {
+            var level = StartOfRound.Instance?.currentLevel;
+            if (level == null) return 0f;
+            if (level.PlanetName == "71 Gordion")
+                return ModConfig.CompanyMoonDecayRate.Value;
+            return 0f;
         }
 
         public static float MobVisibilityBonus(PlayerControllerB local)
