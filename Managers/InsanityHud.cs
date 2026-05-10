@@ -27,6 +27,7 @@ namespace InsanityMod.Managers
         private static void OnSceneLoaded(Scene scene, LoadSceneMode mode) => InsanityMod.Patches.SafePatch.Run(nameof(OnSceneLoaded), () =>
         {
             if (scene.name != "SampleSceneRelay") return;
+            if (!ModConfig.EnableHud.Value) return;
             CreateOverlay();
             SetVisible(false);
         });

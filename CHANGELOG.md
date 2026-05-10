@@ -8,6 +8,7 @@ Playtest-driven additions on top of the v1.0.3 stabilization release.
 - **New:** `UnderwaterRate` config — sustained per-second insanity gain while the local player is underwater (default `0.4`).
 - **New:** `CompanyMoonDecayRate` config — sustained per-second insanity reduction while on the Company building moon (71 Gordion). Default `0.5`. The Company is treated as a thematic refuge.
 - **New:** `MaskedTransformOnlyDuringParanoia` config (default `true`) — restricts the 100% Masked transformation to Paranoia weather rounds. Set `false` to restore the old behavior.
+- **New:** `EnableHud` config (default `true`) — master switch for the insanity HUD ring. Set `false` to disable it entirely (no canvas is created).
 
 ## v1.0.3
 

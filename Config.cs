@@ -17,6 +17,7 @@ namespace InsanityMod
         public static ConfigEntry<float>  TunnelVisionThreshold  { get; private set; } = null!;
         public static ConfigEntry<string> TunnelVisionColor      { get; private set; } = null!;
         public static ConfigEntry<bool>   HideHudAtZero          { get; private set; } = null!;
+        public static ConfigEntry<bool>   EnableHud              { get; private set; } = null!;
 
         public static ConfigEntry<float> MobVisibilityScale      { get; private set; } = null!;
         public static ConfigEntry<float> MobVisibilityRange      { get; private set; } = null!;
@@ -54,6 +55,7 @@ namespace InsanityMod
             TunnelVisionThreshold = cfg.Bind(S_VFX, "TunnelVisionThreshold", 80f,        "Insanity % at which the tunnel-vision overlay starts.");
             TunnelVisionColor     = cfg.Bind(S_VFX, "TunnelVisionColor",     "#180202", "Tunnel vision overlay color (hex). Default is very dark red. Use #000000 for pure black.");
             HideHudAtZero         = cfg.Bind(S_VFX, "HideHudAtZero",         false,     "If true, the insanity HUD ring is hidden while insanity is 0%.");
+            EnableHud             = cfg.Bind(S_VFX, "EnableHud",             true,      "Master switch for the insanity HUD ring. Set to false to disable it entirely (no canvas/sprite created).");
 
             MobVisibilityScale      = cfg.Bind(S_REA, "MobVisibilityScale",      1f,    "Multiplier for insanity gained per second per visible enemy (per-type rates are scaled by this).");
             MobVisibilityRange      = cfg.Bind(S_REA, "MobVisibilityRange",      30f,   "Max distance (m) at which a visible enemy contributes to insanity.");
