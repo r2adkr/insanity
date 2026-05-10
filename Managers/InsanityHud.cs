@@ -115,8 +115,6 @@ namespace InsanityMod.Managers
             _label.text           = "0%";
             _label.color          = ColorForInsanity(0f);
             _label.raycastTarget  = false;
-
-            Plugin.Log.LogInfo("InsanityHud overlay created.");
         }
 
         private static Color ColorForInsanity(float t)
