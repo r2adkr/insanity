@@ -1,7 +1,7 @@
 {
     "name": "InsanityMod",
-    "description": "Insanity system for Lethal Company. Sanity drains in the facility, spikes when you witness deaths, and peaks with tunnel vision, camera shake, and haunting voice playback. Includes Blood Night custom weather.",
-    "version_number": "1.0.1",
+    "description": "Insanity system for Lethal Company. Sanity drains in the facility, spikes when you witness deaths, and peaks with tunnel vision, camera shake, and haunting voice playback. Includes Paranoia custom weather.",
+    "version_number": "1.0.2",
     "dependencies": [
         "BepInEx-BepInExPack-5.4.2100",
         "mrov-WeatherRegistry-0.8.8"
