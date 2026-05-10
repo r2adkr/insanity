@@ -7,10 +7,16 @@ namespace InsanityMod.Patches
     [HarmonyPatch(typeof(HUDManager))]
     internal static class RoundResultsPatcher
     {
+        private static bool _appendedThisRound;
+
+        // Called from RoundPatcher.StartGamePostfix at the start of each round
+        public static void Reset() => _appendedThisRound = false;
+
         [HarmonyPatch("ApplyPenalty")]
         [HarmonyPostfix]
-        private static void ShowInsanityStats(HUDManager __instance)
+        private static void ShowInsanityStats(HUDManager __instance) => SafePatch.Run(nameof(ShowInsanityStats), () =>
         {
+            if (_appendedThisRound) return;
             if (InsanityNetworkHandler.PlayerMaxInsanity.Count == 0) return;
 
             var addition = __instance.statsUIElements?.penaltyAddition;
@@ -32,6 +38,7 @@ namespace InsanityMod.Patches
             }
 
             addition.text += sb.ToString();
-        }
+            _appendedThisRound = true;
+        });
     }
 }

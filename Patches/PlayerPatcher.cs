@@ -10,12 +10,12 @@ namespace InsanityMod.Patches
     {
         [HarmonyPatch("Update")]
         [HarmonyPostfix]
-        private static void UpdatePostfix(PlayerControllerB __instance)
+        private static void UpdatePostfix(PlayerControllerB __instance) => SafePatch.Run(nameof(UpdatePostfix), () =>
         {
             var gnm = GameNetworkManager.Instance;
             if (gnm == null || __instance != gnm.localPlayerController) return;
             if (__instance.isPlayerDead) return;
             InsanityManager.Tick(__instance, Time.deltaTime);
-        }
+        });
     }
 }
