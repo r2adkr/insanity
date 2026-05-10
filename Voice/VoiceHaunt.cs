@@ -19,6 +19,7 @@ namespace InsanityMod.Voice
         private static readonly System.Random _rng = new();
         private static float _hauntCooldown = 5f;
         private static bool  _subscribed;
+        private static readonly List<GameObject> _activeClips = new();
 
         public static void Tick(float localInsanity, float deltaTime)
         {
@@ -52,6 +53,13 @@ namespace InsanityMod.Voice
                 track.ResetFilters();
             }
             _hauntCooldown = 5f;
+
+            for (int i = _activeClips.Count - 1; i >= 0; i--)
+            {
+                if (_activeClips[i] != null)
+                    UnityEngine.Object.Destroy(_activeClips[i]);
+            }
+            _activeClips.Clear();
         }
 
         public static VoiceTrack? GetTrackFor(SamplePlaybackComponent component)
@@ -132,6 +140,7 @@ namespace InsanityMod.Voice
             var go = new GameObject("InsanityHauntPlayer");
             go.transform.position = position;
             UnityEngine.Object.DontDestroyOnLoad(go);
+            _activeClips.Add(go);
 
             var src = go.AddComponent<AudioSource>();
             src.clip            = clip;
