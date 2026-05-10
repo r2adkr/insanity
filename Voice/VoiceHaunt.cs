@@ -83,13 +83,13 @@ namespace InsanityMod.Voice
             }
         }
 
-        private static void OnPlayerLeft(VoicePlayerState state)
+        private static void OnPlayerLeft(VoicePlayerState state) => InsanityMod.Patches.SafePatch.Run(nameof(OnPlayerLeft), () =>
         {
             if (state == null) return;
             if (!_tracks.TryGetValue(state.Name, out var track)) return;
             _tracks.Remove(state.Name);
             _tracksByPlayback.Remove(track.Playback.gameObject.GetInstanceID());
-        }
+        });
 
         private static void RefreshTracks()
         {

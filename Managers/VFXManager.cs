@@ -18,11 +18,11 @@ namespace InsanityMod.Managers
                 _tunnelColor = c;
         }
 
-        private static void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+        private static void OnSceneLoaded(Scene scene, LoadSceneMode mode) => InsanityMod.Patches.SafePatch.Run(nameof(OnSceneLoaded), () =>
         {
             if (scene.name != "SampleSceneRelay") return;
             CreateOverlay();
-        }
+        });
 
         private static void CreateOverlay()
         {

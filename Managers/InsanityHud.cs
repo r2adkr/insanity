@@ -23,12 +23,12 @@ namespace InsanityMod.Managers
             SceneManager.sceneLoaded += OnSceneLoaded;
         }
 
-        private static void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+        private static void OnSceneLoaded(Scene scene, LoadSceneMode mode) => InsanityMod.Patches.SafePatch.Run(nameof(OnSceneLoaded), () =>
         {
             if (scene.name != "SampleSceneRelay") return;
             CreateOverlay();
             SetVisible(false);
-        }
+        });
 
         public static void SetVisible(bool visible)
         {

@@ -33,7 +33,7 @@ namespace InsanityMod
             Log.LogInfo($"{NAME} v{VERSION} loaded.");
         }
 
-        private void LateUpdate()
+        private void LateUpdate() => InsanityMod.Patches.SafePatch.Run(nameof(LateUpdate), () =>
         {
             if (BloodNightManager.IsActive)
                 BloodNightManager.EnforceVisuals();
@@ -53,7 +53,7 @@ namespace InsanityMod
             }
 
             CameraShakeManager.ApplyShake(local, InsanityManager.Insanity);
-        }
+        });
 
         private void OnDestroy()
         {

@@ -69,12 +69,12 @@ namespace InsanityMod.Managers
                 EventManager.WeatherChanged.RemoveListener(OnWeatherChanged);
         }
 
-        private static void OnWeatherChanged((SelectableLevel level, Weather weather) args)
+        private static void OnWeatherChanged((SelectableLevel level, Weather weather) args) => InsanityMod.Patches.SafePatch.Run(nameof(OnWeatherChanged), () =>
         {
             if (_bloodNightWeather == null) return;
             if (args.weather == _bloodNightWeather) _paranoiaLevels.Add(args.level);
             else _paranoiaLevels.Remove(args.level);
-        }
+        });
 
         public static void OnRoundStart()
         {
