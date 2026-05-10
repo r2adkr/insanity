@@ -9,7 +9,7 @@ namespace InsanityMod.Patches
     {
         [HarmonyPatch("KillPlayer")]
         [HarmonyPostfix]
-        private static void KillPlayerPostfix(PlayerControllerB __instance)
+        private static void KillPlayerPostfix(PlayerControllerB __instance) => SafePatch.Run(nameof(KillPlayerPostfix), () =>
         {
             if (!InsanityManager.IsRoundActive) return;
             if (__instance == null) return;
@@ -21,6 +21,6 @@ namespace InsanityMod.Patches
             if (!InsanityModifiers.IsPositionVisible(local, __instance.transform.position, maxRange)) return;
 
             InsanityManager.AddInsanity(ModConfig.DeathWitnessSpike.Value);
-        }
+        });
     }
 }

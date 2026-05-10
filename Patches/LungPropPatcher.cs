@@ -8,10 +8,10 @@ namespace InsanityMod.Patches
     {
         [HarmonyPatch("EquipItem")]
         [HarmonyPrefix]
-        private static void EquipItemPrefix(LungProp __instance)
+        private static void EquipItemPrefix(LungProp __instance) => SafePatch.Run(nameof(EquipItemPrefix), () =>
         {
             if (__instance.isLungDocked)
                 InsanityManager.OnApparatusRemoved();
-        }
+        });
     }
 }
