@@ -1,5 +1,18 @@
 # Changelog
 
+## v1.0.3
+
+Stabilization & defensive sweep — no player-facing behavior changes.
+
+- **New:** `SafePatch` helper wraps every Harmony patch, Unity callback, and event listener with deduplicated exception logging. A single throw in any patch can no longer silently disable other patches or spam the log.
+- **Perf:** Per-frame hot paths (`PlayerControllerB.Update`, `DressGirlAI.Update`, `OnAudioFilterRead`) lift their early-exit guards above the wrapper to avoid closure allocation when nothing needs to run.
+- **Perf:** `BloodNightManager.GetSun()` fallback `FindObjectsOfType<Light>()` is throttled to once every 5 seconds when the cached reference is missing.
+- **Fix:** End-of-round insanity stats no longer get appended twice if the game's `ApplyPenalty` fires more than once per round.
+- **Fix:** `VoiceHaunt` haunt-clip GameObjects (which use `DontDestroyOnLoad`) are tracked and cleaned up on round end so they can't pile up across long sessions.
+- **Fix:** Plugin teardown now clears the Paranoia weather level set and removes the `WeatherChanged` listener.
+- **Fix:** Network message handlers wrapped — a malformed packet can no longer break the handler registration.
+- **Chore:** Dropped a per-level "InsanityHud overlay created" log line.
+
 ## v1.0.2
 
 *Most of this release is driven by feedback from **vDolo** — thanks!*
