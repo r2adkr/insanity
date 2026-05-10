@@ -6,3 +6,4 @@ obj/
 .claude/
 _thunderstore_pkg/
 *.zip
+docs/
