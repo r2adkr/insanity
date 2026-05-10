@@ -14,6 +14,8 @@ namespace InsanityMod.Managers
         private static Weather?    _bloodNightWeather;
         private static GameObject? _rainEffectRef;
         private static Light?      _cachedSun;
+        private static float       _lastSunSearch = -100f;
+        private const  float       SunSearchCooldown = 5f;
 
         private static readonly HashSet<SelectableLevel> _paranoiaLevels = new();
 
@@ -130,6 +132,10 @@ namespace InsanityMod.Managers
         {
             if (_cachedSun != null) return _cachedSun;
             if (RenderSettings.sun != null) return _cachedSun = RenderSettings.sun;
+
+            if (Time.time - _lastSunSearch < SunSearchCooldown) return null;
+            _lastSunSearch = Time.time;
+
             foreach (var l in Object.FindObjectsOfType<Light>())
                 if (l.type == LightType.Directional) return _cachedSun = l;
             return null;
