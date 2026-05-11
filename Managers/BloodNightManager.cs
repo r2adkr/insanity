@@ -112,23 +112,22 @@ namespace InsanityMod.Managers
             if (!_fadingOut) return;
             if (_skyVolume == null && _fogVolume == null) { _fadingOut = false; return; }
 
-            float step = Time.deltaTime / 2.0f; // ~2 second fade
+            float step = Time.deltaTime / 2.0f; // ~2 s fade-out (deliberately slower than EnforceVisuals' 0.5 s in-out)
             if (_skyVolume != null) _skyVolume.weight = Mathf.MoveTowards(_skyVolume.weight, 0f, step);
             if (_fogVolume != null) _fogVolume.weight = Mathf.MoveTowards(_fogVolume.weight, 0f, step);
 
-            // Lerp ambient/sun back simultaneously
-            float t = 1f - (_skyVolume?.weight ?? 0f);
-            RenderSettings.ambientLight = Color.Lerp(_ambientFlat, _savedAmbientLight, t);
+            // Same lerp expression as EnforceVisuals: w = 0 → vanilla, w = 1 → full Paranoia.
+            float w = _fogVolume?.weight ?? 0f;
+            RenderSettings.ambientLight = Color.Lerp(_savedAmbientLight, _ambientFlat, w);
             var sun = GetSun();
             if (sun != null)
             {
-                sun.color     = Color.Lerp(_sunColor, _savedSunColor, t);
-                sun.intensity = Mathf.Lerp(0.12f, _savedSunIntensity, t);
+                sun.color     = Color.Lerp(_savedSunColor, _sunColor, w);
+                sun.intensity = Mathf.Lerp(_savedSunIntensity, 0.12f, w);
             }
 
             float skyW = _skyVolume?.weight ?? 0f;
-            float fogW = _fogVolume?.weight ?? 0f;
-            if (skyW <= 0f && fogW <= 0f)
+            if (skyW <= 0f && w <= 0f)
             {
                 RestoreVisuals();
                 _fadingOut = false;
@@ -162,38 +161,27 @@ namespace InsanityMod.Managers
             var player = GameNetworkManager.Instance?.localPlayerController;
             bool outdoors = player != null && !player.isInsideFactory && !player.isInHangarShipRoom;
 
-            // Fog only outdoors — no red fog inside ship/factory
+            float target = outdoors ? 1f : 0f;
+            float step   = Time.deltaTime * 2f; // ~0.5 s fade
+
+            if (_skyVolume != null)
+                _skyVolume.weight = Mathf.MoveTowards(_skyVolume.weight, target, step);
             if (_fogVolume != null)
-            {
-                float target = outdoors ? 1f : 0f;
-                _fogVolume.weight = Mathf.MoveTowards(_fogVolume.weight, target, Time.deltaTime * 2f);
-            }
+                _fogVolume.weight = Mathf.MoveTowards(_fogVolume.weight, target, step);
 
-            if (outdoors)
-            {
-                RenderSettings.ambientMode  = AmbientMode.Flat;
-                RenderSettings.ambientLight = _ambientFlat;
+            // Drive ambient/sun off the same lerp factor (fog weight) so all four channels move in lockstep.
+            // 0 = vanilla saved values, 1 = full Paranoia. ambientMode stays at the saved vanilla mode.
+            float w = _fogVolume?.weight ?? 0f;
+            RenderSettings.ambientMode  = _savedAmbientMode;
+            RenderSettings.ambientLight = Color.Lerp(_savedAmbientLight, _ambientFlat, w);
 
-                var sun = GetSun();
-                if (sun != null)
-                {
-                    sun.color              = _sunColor;
-                    sun.intensity          = 0.12f;
-                    sun.transform.rotation = _sunRot;
-                }
-            }
-            else
+            var sun = GetSun();
+            if (sun != null)
             {
-                // Restore natural ambient/sun while indoors so ship/factory aren't pitch black
-                RenderSettings.ambientMode  = _savedAmbientMode;
-                RenderSettings.ambientLight = _savedAmbientLight;
-
-                var sun = GetSun();
-                if (sun != null)
-                {
-                    sun.color     = _savedSunColor;
-                    sun.intensity = _savedSunIntensity;
-                }
+                sun.color     = Color.Lerp(_savedSunColor, _sunColor, w);
+                sun.intensity = Mathf.Lerp(_savedSunIntensity, 0.12f, w);
+                if (outdoors)
+                    sun.transform.rotation = _sunRot; // rotation forced only outdoors; not lerped (would visibly swing the shadow)
             }
 
             if (_rainEffectRef != null && !_rainEffectRef.activeSelf)
@@ -204,12 +192,12 @@ namespace InsanityMod.Managers
         {
             if (_skyVolumeObj != null) return;
 
-            // Sky volume — always on, very subtle global tone so ship interior view of outside stays consistent
+            // Sky volume — outdoor-gated like fog. Starts at 0 and lerps to 1 only while the local player is outdoors.
             _skyVolumeObj = new GameObject("InsanityMod_ParanoiaSky");
             _skyVolume          = _skyVolumeObj.AddComponent<Volume>();
             _skyVolume.isGlobal = true;
             _skyVolume.priority = 9999f;
-            _skyVolume.weight   = 1f;
+            _skyVolume.weight   = 0f;
 
             _skyProfile        = ScriptableObject.CreateInstance<VolumeProfile>();
             _skyVolume.profile = _skyProfile;
