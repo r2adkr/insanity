@@ -50,6 +50,7 @@ namespace InsanityMod.Managers
             rate -= ProximityBuff(local);
             rate -= LightBuff(local);
             rate -= CompanyMoonBonus(local);
+            rate -= TZPBuff(local);
             return rate;
         }
 
@@ -65,6 +66,11 @@ namespace InsanityMod.Managers
             if (level.PlanetName == "71 Gordion")
                 return ModConfig.CompanyMoonDecayRate.Value;
             return 0f;
+        }
+
+        public static float TZPBuff(PlayerControllerB local)
+        {
+            return local.drunkness > 0.05f ? ModConfig.TZPInsanityDrainRate.Value : 0f;
         }
 
         public static float MobVisibilityBonus(PlayerControllerB local)
