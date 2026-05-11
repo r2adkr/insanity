@@ -28,7 +28,7 @@ namespace InsanityMod.Managers
         // Fade-out state — kept active after IsActive=false to smoothly tear down visuals
         private static bool  _fadingOut;
 
-        // Sky/color volume — always on, applies everywhere for consistency
+        // Sky/color volume — outdoor-gated, weight lerped 0↔1 in lockstep with fog
         private static GameObject?    _skyVolumeObj;
         private static Volume?        _skyVolume;
         private static VolumeProfile? _skyProfile;
