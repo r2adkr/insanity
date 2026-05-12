@@ -6,11 +6,12 @@ namespace InsanityMod.Managers
 {
     internal static class InsanityManager
     {
-        private static float _insanity;
-        private static float _maxInsanityThisRound;
-        private static bool  _roundActive;
-        private static bool  _apparatusRemoved;
-        private static bool  _hasTransformedThisRound;
+        private static float       _insanity;
+        private static float       _maxInsanityThisRound;
+        private static bool        _roundActive;
+        private static bool        _apparatusRemoved;
+        private static bool        _hasTransformedThisRound;
+        private static ShipLights? _cachedShipLights;
 
         public static float Insanity             => _insanity;
         public static float MaxInsanityThisRound => _maxInsanityThisRound;
@@ -63,7 +64,7 @@ namespace InsanityMod.Managers
                 player.isInsideFactory,
                 player.isInHangarShipRoom,
                 ModConfig.InsanityRateInFacility.Value,
-                ModConfig.InsanityRateOnShip.Value,
+                GetShipRate(),
                 outdoorRate,
                 BloodNightManager.IsActive ? ModConfig.BloodNightMultiplier.Value : 1f,
                 deltaTime);
@@ -97,6 +98,17 @@ namespace InsanityMod.Managers
         {
             _insanity = 0f;
             InsanityHud.UpdateValue(0f);
+        }
+
+        private static float GetShipRate()
+        {
+            if (_cachedShipLights == null)
+                _cachedShipLights = Object.FindObjectOfType<ShipLights>();
+
+            bool lightsOn = _cachedShipLights != null && _cachedShipLights.areLightsOn;
+            return lightsOn
+                ? ModConfig.RateOnShipLightsOn.Value
+                : ModConfig.RateOnShipLightsOff.Value;
         }
 
         public static void AddInsanity(float amount)

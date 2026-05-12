@@ -6,7 +6,6 @@ namespace InsanityMod
     {
         public static ConfigEntry<string> Language               { get; private set; } = null!;
         public static ConfigEntry<float> InsanityRateInFacility  { get; private set; } = null!;
-        public static ConfigEntry<float> InsanityRateOnShip      { get; private set; } = null!;
         public static ConfigEntry<float> InsanityDecayOutdoor    { get; private set; } = null!;
         public static ConfigEntry<float> NightOutdoorRate        { get; private set; } = null!;
         public static ConfigEntry<int>   NightStartHour          { get; private set; } = null!;
@@ -35,6 +34,8 @@ namespace InsanityMod
         public static ConfigEntry<float> UnderwaterRate          { get; private set; } = null!;
         public static ConfigEntry<float> CompanyMoonDecayRate    { get; private set; } = null!;
         public static ConfigEntry<float> TZPInsanityDrainRate    { get; private set; } = null!;
+        public static ConfigEntry<float> RateOnShipLightsOn      { get; private set; } = null!;
+        public static ConfigEntry<float> RateOnShipLightsOff     { get; private set; } = null!;
 
         public static void Initialize(ConfigFile cfg)
         {
@@ -45,7 +46,6 @@ namespace InsanityMod
 
             Language               = cfg.Bind("General", "Language", "AUTO", "Display language. AUTO detects from system locale. Options: AUTO, EN, KO.");
             InsanityRateInFacility = cfg.Bind(S_INS, "InsanityRateInFacility", 0.167f, "Insanity gained per second inside the facility (baseline, ~10 min solo to 100%).");
-            InsanityRateOnShip     = cfg.Bind(S_INS, "InsanityRateOnShip",     0f,   "Insanity gained per second on the ship.");
             InsanityDecayOutdoor   = cfg.Bind(S_INS, "InsanityDecayOutdoor",   0.8f, "Insanity lost per second outdoors (daytime).");
             NightOutdoorRate       = cfg.Bind(S_INS, "NightOutdoorRate",       0.05f, "Insanity gained per second outdoors at night. Set to 0 to disable.");
             NightStartHour         = cfg.Bind(S_INS, "NightStartHour",         19,    "Game hour (0-23) at which night begins outdoors.");
@@ -74,6 +74,8 @@ namespace InsanityMod
             UnderwaterRate         = cfg.Bind(S_REA, "UnderwaterRate",         0.4f,  "Insanity gained per second while the local player is underwater.");
             CompanyMoonDecayRate   = cfg.Bind(S_INS, "CompanyMoonDecayRate",   0.5f,  "Insanity reduced per second while on the Company building moon (71 Gordion).");
             TZPInsanityDrainRate   = cfg.Bind(S_REA, "TZPInsanityDrainRate",   0.5f,  "Insanity reduced per second while the local player has an active TZP-Inhalant effect.");
+            RateOnShipLightsOn     = cfg.Bind(S_INS, "RateOnShipLightsOn",     -0.3f, "Insanity per second on the ship while ship lights are ON. Negative reduces, positive increases.");
+            RateOnShipLightsOff    = cfg.Bind(S_INS, "RateOnShipLightsOff",    0.15f, "Insanity per second on the ship while ship lights are OFF. Negative reduces, positive increases.");
         }
     }
 }
