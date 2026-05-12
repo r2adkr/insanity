@@ -16,11 +16,13 @@ A Lethal Company mod that tracks player sanity and makes high-insanity runs genu
 
 ### Insanity meter
 
-Insanity (0–100%) accumulates while you're inside the facility and drains while you're outdoors during the day. On the ship it stays flat.
+Insanity (0–100%) accumulates while you're inside the facility and drains while you're outdoors during the day. The ship is a partial refuge — it drains insanity while the lights are on, and creeps it up slowly when they're off.
 
 - **Solo in the facility:** ~10 minutes to 100%
+- **On the ship:** slowly drains with lights on (−0.3/s), creeps up slowly when dark (+0.15/s)
 - **Outdoors (daytime):** slowly decays back toward 0
 - **Outdoors (night / Eclipse):** insanity rises instead of falling
+- **On the Company moon (Gordion):** drains regardless of lights — the Company is a thematic refuge
 - **Resets each round** — every new expedition starts fresh
 
 ### Things that make it worse
@@ -32,6 +34,8 @@ Insanity (0–100%) accumulates while you're inside the facility and drains whil
 | Paranoia weather | rate multiplier |
 | Night outdoors | slow rise instead of decay |
 | Eclipse weather outdoors | faster rise than night |
+| Underwater | +0.4/s |
+| Ship with lights off | +0.15/s (mild creep) |
 
 Enemy threat scale (examples): Bracken / Ghost Girl = 2.0×, Jester / Coilhead = 1.5×, Forest Giant / Masked = 1.4×, Sand Worm = 1.8×, Thumper = 0.8×
 
@@ -42,8 +46,11 @@ Enemy threat scale (examples): Bracken / Ghost Girl = 2.0×, Jester / Coilhead =
 | Teammate within 6m | −0.15/s |
 | Flashlight on / in ship | −0.1/s |
 | Near a facility light | −0.1/s |
+| Ship with lights on | −0.3/s (base rate) |
+| TZP-Inhalant effect active | −0.5/s |
+| On the Company moon (Gordion) | −0.5/s |
 
-Being with a teammate near a light source in the facility effectively keeps insanity stable — unless the apparatus has been removed.
+Being with a teammate near a light source in the facility effectively keeps insanity stable — unless the apparatus has been removed. TZP-Inhalant is a purchasable safety valve: one inhale (~17 s effect window) recovers ~8.5%. Note: TZP does **not** reduce insanity inside the facility after the apparatus has been removed (the apparatus-removed penalty disables all in-facility recovery).
 
 ---
 
@@ -105,28 +112,35 @@ All values are in `BepInEx/config/com.insanitymod.lethalcompany.cfg`.
 |-----|---------|-------------|
 | `Language` | `AUTO` | Display language. `AUTO` detects from system locale. Supported: `EN`, `KO` |
 | `InsanityRateInFacility` | `0.167` | Insanity/s inside facility |
-| `InsanityRateOnShip` | `0` | Insanity/s on ship |
+| `RateOnShipLightsOn` | `-0.3` | Insanity/s on ship while lights are ON (negative = recovery) |
+| `RateOnShipLightsOff` | `0.15` | Insanity/s on ship while lights are OFF |
 | `InsanityDecayOutdoor` | `0.8` | Insanity/s lost outdoors (daytime) |
 | `NightOutdoorRate` | `0.05` | Insanity/s gained outdoors at night (0 = disabled) |
 | `NightStartHour` | `19` | Game hour at which night begins (0–23) |
 | `EclipseOutdoorRate` | `0.1` | Insanity/s gained outdoors during Eclipse |
+| `ParanoiaOutdoorRate` | `0.1` | Insanity/s gained outdoors during Paranoia weather |
+| `CompanyMoonDecayRate` | `0.5` | Insanity/s reduced while on the Company moon (71 Gordion) |
 | `ParanoiaMultiplier` | `1.2` | Rate multiplier during Paranoia weather |
 | `ParanoiaSpawnWeight` | `20` | Spawn weight (other weathers: 100) |
 | `TunnelVisionThreshold` | `80` | % at which vignette begins |
 | `TunnelVisionColor` | `#180202` | Tunnel vision overlay color (hex). Use `#000000` for pure black |
 | `HideHudAtZero` | `false` | If true, hides the insanity HUD ring while at 0% |
+| `EnableHud` | `true` | Master switch for the insanity HUD ring — set `false` to disable entirely |
 | `MobVisibilityScale` | `1.0` | Global multiplier for enemy-visibility rate |
 | `MobVisibilityRange` | `30` | Max distance (m) for enemy detection |
 | `TeammateBuffRate` | `0.15` | Rate reduction near a teammate |
 | `TeammateBuffRange` | `6` | Range (m) for teammate buff |
 | `LightBuffRate` | `0.1` | Rate reduction when illuminated |
 | `LightProximityRange` | `8` | Range (m) to facility light |
+| `UnderwaterRate` | `0.4` | Insanity/s gained while underwater |
+| `TZPInsanityDrainRate` | `0.5` | Insanity/s reduced while a TZP-Inhalant effect is active |
 | `DeathWitnessSpike` | `25` | Insanity spike when witnessing a death |
 | `DeathWitnessRange` | `40` | Max distance (m) for death witness check |
 | `GhostGirlBoostThreshold` | `80` | % above which Ghost Girl haunt speed increases |
 | `VoiceHauntThreshold` | `70` | % at which voice distortion + haunting begins |
 | `ApparatusSpike` | `15` | *(spoiler)* Instant insanity gain when apparatus is removed |
 | `EnableMaskedTransform` | `true` | *(spoiler)* If false, the 100% effect is skipped entirely |
+| `MaskedTransformOnlyDuringParanoia` | `true` | *(spoiler)* If true, the 100% Masked transformation only triggers during Paranoia rounds |
 
 ---
 
