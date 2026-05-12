@@ -5,7 +5,7 @@
 Playtest-driven additions on top of v1.0.4.
 
 - **Fix:** Paranoia weather visuals are now strictly outdoor-only. The red sky tint and exposure cut no longer leak into the ship or facility interior. Indoor↔outdoor transitions fade fog, sky tint, ambient light, and sun together over ~0.5 s — eliminating the bright→red flash that appeared when stepping off the ship ramp.
-- **New:** `TZPInsanityDrainRate` config — sustained per-second insanity reduction while the local player has the TZP-Inhalant effect active (`drunkness > 0.05`). Default `0.5`/s. One inhale (~17 s effect window) recovers ~8.5%; stack three for ~25% — a cheap safety valve, particularly useful on apparatus-removed rounds where in-facility buffs are disabled.
+- **New:** `TZPInsanityDrainRate` config — sustained per-second insanity reduction while the local player has the TZP-Inhalant effect active (`drunkness > 0.05`). Default `1.0`/s. One inhale (~17 s effect window) recovers ~17%; stack three for ~50% — a strong safety valve, particularly useful on apparatus-removed rounds where in-facility buffs are disabled.
 - **Change:** `InsanityRateOnShip` is replaced by `RateOnShipLightsOn` (default `-0.3`/s) and `RateOnShipLightsOff` (default `+0.15`/s). Ship lights become a tactical lever: lit ship is a passive recovery zone, dark ship is a mild threat (still slower than the facility). Old config files will retain the now-unread `InsanityRateOnShip` line as a cosmetic orphan — BepInEx does not auto-clean it. Safe to delete by hand.
 
 ## v1.0.4

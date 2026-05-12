@@ -47,10 +47,10 @@ Enemy threat scale (examples): Bracken / Ghost Girl = 2.0×, Jester / Coilhead =
 | Flashlight on / in ship | −0.1/s |
 | Near a facility light | −0.1/s |
 | Ship with lights on | −0.3/s (base rate) |
-| TZP-Inhalant effect active | −0.5/s |
+| TZP-Inhalant effect active | −1.0/s |
 | On the Company moon (Gordion) | −0.5/s |
 
-Being with a teammate near a light source in the facility effectively keeps insanity stable — unless the apparatus has been removed. TZP-Inhalant is a purchasable safety valve: one inhale (~17 s effect window) recovers ~8.5%. Note: TZP does **not** reduce insanity inside the facility after the apparatus has been removed (the apparatus-removed penalty disables all in-facility recovery).
+Being with a teammate near a light source in the facility effectively keeps insanity stable — unless the apparatus has been removed. TZP-Inhalant is a strong safety valve: one inhale (~17 s effect window) recovers ~17%. Note: TZP does **not** reduce insanity inside the facility after the apparatus has been removed (the apparatus-removed penalty disables all in-facility recovery).
 
 ---
 
@@ -133,7 +133,7 @@ All values are in `BepInEx/config/com.insanitymod.lethalcompany.cfg`.
 | `LightBuffRate` | `0.1` | Rate reduction when illuminated |
 | `LightProximityRange` | `8` | Range (m) to facility light |
 | `UnderwaterRate` | `0.4` | Insanity/s gained while underwater |
-| `TZPInsanityDrainRate` | `0.5` | Insanity/s reduced while a TZP-Inhalant effect is active |
+| `TZPInsanityDrainRate` | `1.0` | Insanity/s reduced while a TZP-Inhalant effect is active |
 | `DeathWitnessSpike` | `25` | Insanity spike when witnessing a death |
 | `DeathWitnessRange` | `40` | Max distance (m) for death witness check |
 | `GhostGirlBoostThreshold` | `80` | % above which Ghost Girl haunt speed increases |

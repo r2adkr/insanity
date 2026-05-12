@@ -73,7 +73,7 @@ namespace InsanityMod
             MaskedTransformOnlyDuringParanoia = cfg.Bind(S_REA, "MaskedTransformOnlyDuringParanoia", true,  "If true, the 100% Masked transformation only triggers when Paranoia weather is active.");
             UnderwaterRate         = cfg.Bind(S_REA, "UnderwaterRate",         0.4f,  "Insanity gained per second while the local player is underwater.");
             CompanyMoonDecayRate   = cfg.Bind(S_INS, "CompanyMoonDecayRate",   0.5f,  "Insanity reduced per second while on the Company building moon (71 Gordion).");
-            TZPInsanityDrainRate   = cfg.Bind(S_REA, "TZPInsanityDrainRate",   0.5f,  "Insanity reduced per second while the local player has an active TZP-Inhalant effect.");
+            TZPInsanityDrainRate   = cfg.Bind(S_REA, "TZPInsanityDrainRate",   1.0f,  "Insanity reduced per second while the local player has an active TZP-Inhalant effect.");
             RateOnShipLightsOn     = cfg.Bind(S_INS, "RateOnShipLightsOn",     -0.3f, "Insanity per second on the ship while ship lights are ON. Negative reduces, positive increases.");
             RateOnShipLightsOff    = cfg.Bind(S_INS, "RateOnShipLightsOff",    0.15f, "Insanity per second on the ship while ship lights are OFF. Negative reduces, positive increases.");
         }
