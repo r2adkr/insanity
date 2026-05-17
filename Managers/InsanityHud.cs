@@ -42,7 +42,9 @@ namespace InsanityMod.Managers
         {
             if (_canvasGroup != null)
             {
-                float target = ModConfig.HideHudAtZero.Value && insanity <= 0.5f ? 0f : 1f;
+                bool hidden = !ModConfig.EnableHud.Value
+                              || (ModConfig.HideHudAtZero.Value && insanity <= 0.5f);
+                float target = hidden ? 0f : 1f;
                 _canvasGroup.alpha = Mathf.MoveTowards(_canvasGroup.alpha, target, Time.deltaTime * 2f);
             }
 

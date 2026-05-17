@@ -11,7 +11,7 @@ namespace InsanityMod
     {
         public const string GUID    = "com.insanitymod.lethalcompany";
         public const string NAME    = "InsanityMod";
-        public const string VERSION = "1.0.5";
+        public const string VERSION = "1.0.6";
 
         internal static ManualLogSource Log = null!;
         internal static Plugin Instance    = null!;

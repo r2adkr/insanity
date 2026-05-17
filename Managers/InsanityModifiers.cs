@@ -136,7 +136,7 @@ namespace InsanityMod.Managers
 
         public static float LightBuff(PlayerControllerB local)
         {
-            if (local.isInHangarShipRoom) return ModConfig.LightBuffRate.Value;
+            if (InsanityManager.IsInShip(local)) return ModConfig.LightBuffRate.Value;
             if (local.helmetLight != null && local.helmetLight.enabled) return ModConfig.LightBuffRate.Value;
 
             if (local.ItemSlots != null)

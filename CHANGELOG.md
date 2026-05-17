@@ -1,5 +1,15 @@
 # Changelog
 
+## v1.0.6
+
+Bug-fix pass driven by **vDolo**'s playtest report.
+
+- **Fix:** `EnableHud = false` now actually hides the HUD ring at runtime. Previously the toggle was only checked at scene load, so flipping it mid-session left the ring visible.
+- **Fix:** Paranoia visuals no longer bleed into unrelated sessions after Save & Quit. Returning to the main menu now force-resets the active flag, the per-level set, and any lingering HDRP volumes / rain.
+- **Fix:** Paranoia weather no longer overwrites the native snow / fog cover on Rend, Dine, and Titan. The red HDRP Fog override is skipped on those moons; ColorAdjustments (red tint + darkening) still apply, so Paranoia still reads as Paranoia.
+- **Fix:** Ship-interior detection switched from `PlayerControllerB.isInHangarShipRoom` to the vanilla `shipInnerRoomBounds` AABB. Fixes false "in ship" readings around the second-story railing with **2-Story Ship**, and fixes Imperium teleports not registering as inside the ship until the player physically lands.
+- **Fix:** Underwater insanity gain now takes priority over outdoor decay. Previously the −0.8/s decay partially cancelled the +0.4/s underwater rate, producing a net decrease in flooded weathers — now the decay branch is suppressed while submerged outdoors, so insanity climbs as intended.
+
 ## v1.0.5
 
 Playtest-driven additions on top of v1.0.4.

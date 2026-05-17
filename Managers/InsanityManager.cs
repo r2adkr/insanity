@@ -44,11 +44,27 @@ namespace InsanityMod.Managers
 
         public static void ResetForRound() => StartRound();
 
+        // Independent ship-interior check that works around two upstream issues:
+        //   1. 2-Story Ship inflates the trigger collider that drives PlayerControllerB.isInHangarShipRoom,
+        //      so the vanilla flag flips true even outside the railing.
+        //   2. Imperium teleports skip the trigger entirely until the player physically lands.
+        // shipInnerRoomBounds is the vanilla box that defines the actual interior bounds; querying it by
+        // position each frame is robust to both cases.
+        public static bool IsInShip(PlayerControllerB player)
+        {
+            if (player == null) return false;
+            var bounds = StartOfRound.Instance?.shipInnerRoomBounds;
+            if (bounds != null)
+                return bounds.bounds.Contains(player.transform.position);
+            return player.isInHangarShipRoom;
+        }
+
         public static void Tick(PlayerControllerB player, float deltaTime)
         {
             if (!_roundActive) return;
 
-            bool isOutdoor = !player.isInsideFactory && !player.isInHangarShipRoom;
+            bool isInShip  = IsInShip(player);
+            bool isOutdoor = !player.isInsideFactory && !isInShip;
             float outdoorRate;
             if (isOutdoor && BloodNightManager.IsActive)
                 outdoorRate = ModConfig.ParanoiaOutdoorRate.Value;
@@ -60,9 +76,15 @@ namespace InsanityMod.Managers
             else
                 outdoorRate = -ModConfig.InsanityDecayOutdoor.Value;
 
+            // Underwater priority: while submerged outdoors, any outdoor decay is suppressed so the
+            // UnderwaterBonus (+rate) dominates. Without this, decay (-0.8) partially cancels underwater
+            // gain (+0.4), producing a net decrease in flooded weathers — the opposite of intended.
+            if (isOutdoor && player.isUnderwater && outdoorRate < 0f)
+                outdoorRate = 0f;
+
             float baseDelta = InsanityCalculator.TickDelta(
                 player.isInsideFactory,
-                player.isInHangarShipRoom,
+                isInShip,
                 ModConfig.InsanityRateInFacility.Value,
                 GetShipRate(),
                 outdoorRate,

@@ -3,6 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.HighDefinition;
+using UnityEngine.SceneManagement;
 using WeatherRegistry;
 
 namespace InsanityMod.Managers
@@ -18,6 +19,16 @@ namespace InsanityMod.Managers
         private const  float       SunSearchCooldown = 5f;
 
         private static readonly HashSet<SelectableLevel> _paranoiaLevels = new();
+
+        // Vanilla moons whose own atmospheric fog defines their visual identity (snow / fog cover).
+        // On these moons we skip the Paranoia Fog override so we don't stomp the snow/fog look.
+        // ColorAdjustments still apply, so Paranoia tinting remains visible.
+        private static readonly HashSet<string> _preserveExistingFogMoons = new()
+        {
+            "85 Rend",
+            "7 Dine",
+            "8 Titan",
+        };
 
         private static AmbientMode _savedAmbientMode;
         private static Color       _savedAmbientLight;
@@ -60,14 +71,32 @@ namespace InsanityMod.Managers
 
             WeatherManager.RegisterWeather(_bloodNightWeather);
             EventManager.WeatherChanged.AddListener(OnWeatherChanged);
+
+            SceneManager.sceneLoaded += OnSceneLoaded;
         }
 
         public static void OnPluginDestroy()
         {
             _paranoiaLevels.Clear();
+            SceneManager.sceneLoaded -= OnSceneLoaded;
             if (_bloodNightWeather != null)
                 EventManager.WeatherChanged.RemoveListener(OnWeatherChanged);
         }
+
+        // Force-reset all state when returning to the main menu. Without this, _paranoiaLevels and
+        // IsActive can persist across Save & Quit → New Game cycles in the same Unity process,
+        // causing the previous round's Paranoia visuals to bleed into an unrelated next session.
+        private static void OnSceneLoaded(Scene scene, LoadSceneMode mode) => InsanityMod.Patches.SafePatch.Run(nameof(OnSceneLoaded), () =>
+        {
+            if (scene.name != "MainMenu") return;
+            IsActive     = false;
+            _fadingOut   = false;
+            _pendingSave = false;
+            _cachedSun   = null;
+            _paranoiaLevels.Clear();
+            DisableHDRPVolume();
+            DisableRain();
+        });
 
         private static void OnWeatherChanged((SelectableLevel level, Weather weather) args) => InsanityMod.Patches.SafePatch.Run(nameof(OnWeatherChanged), () =>
         {
@@ -159,7 +188,7 @@ namespace InsanityMod.Managers
             }
 
             var player = GameNetworkManager.Instance?.localPlayerController;
-            bool outdoors = player != null && !player.isInsideFactory && !player.isInHangarShipRoom;
+            bool outdoors = player != null && !player.isInsideFactory && !InsanityManager.IsInShip(player);
 
             float target = outdoors ? 1f : 0f;
             float step   = Time.deltaTime * 2f; // ~0.5 s fade
@@ -216,13 +245,18 @@ namespace InsanityMod.Managers
             _fogProfile        = ScriptableObject.CreateInstance<VolumeProfile>();
             _fogVolume.profile = _fogProfile;
 
-            var fog = _fogProfile.Add<Fog>(true);
-            fog.enabled.Override(true);
-            fog.albedo.Override(new Color(0.18f, 0.02f, 0.02f));
-            fog.meanFreePath.Override(120f);
-            fog.baseHeight.Override(0f);
-            fog.maximumHeight.Override(150f);
-            fog.tint.Override(new Color(0.5f, 0.1f, 0.1f));
+            string? planet = StartOfRound.Instance?.currentLevel?.PlanetName;
+            bool preserveExistingFog = planet != null && _preserveExistingFogMoons.Contains(planet);
+            if (!preserveExistingFog)
+            {
+                var fog = _fogProfile.Add<Fog>(true);
+                fog.enabled.Override(true);
+                fog.albedo.Override(new Color(0.18f, 0.02f, 0.02f));
+                fog.meanFreePath.Override(120f);
+                fog.baseHeight.Override(0f);
+                fog.maximumHeight.Override(150f);
+                fog.tint.Override(new Color(0.5f, 0.1f, 0.1f));
+            }
 
             var fogAdj = _fogProfile.Add<ColorAdjustments>(true);
             fogAdj.postExposure.Override(-1.3f); // outdoor only — strong darkening
